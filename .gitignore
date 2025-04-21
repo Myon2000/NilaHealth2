@@ -1,24 +1,22 @@
-/.phpunit.cache
-/bootstrap/ssr
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
+# Laravel & PHP
+/vendor/
+/node_modules/
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-/auth.json
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
+.env.*
+/storage/*.key
+/storage/*.log
+/storage/framework/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# IDE/editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python virtualenv
+.venv/
+
+# Model besar
+nilahealth-model/model/efficientnet_model.keras

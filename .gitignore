@@ -19,4 +19,4 @@
 .venv/
 
 # Model besar
-nilahealth-model/model/efficientnet_model.keras
+/nilahealth-model/model/efficientnet_model.keras

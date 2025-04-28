@@ -1,5 +1,5 @@
 import matplotlib
-matplotlib.use('Agg')  # Tambahan: gunakan non-GUI backend sebelum import pyplot
+matplotlib.use('Agg') 
 
 from flask import Flask, request, jsonify, send_from_directory
 import tensorflow as tf
@@ -37,10 +37,10 @@ except Exception as e:
 def get_db_connection():
     try:
         connection = mysql.connector.connect(
-            host='127.0.0.1',  # Ganti dengan host MySQL Anda
-            user='root',  # Ganti dengan username MySQL Anda
-            password='',  # Ganti dengan password MySQL Anda
-            database='nilahealth_v1'  # Ganti dengan nama database Anda
+            host='127.0.0.1', 
+            user='root',  
+            password='',  
+            database='nilahealth_v1'  
         )
         return connection
     except Error as e:
@@ -81,7 +81,7 @@ def create_prediction_image(img_path, prediction_text, save_path):
         )
 
         plt.savefig(save_path, bbox_inches='tight')
-        plt.close()  # Pastikan menutup plot agar tidak leak memory
+        plt.close()  
     except Exception as e:
         app.logger.error(f"Error creating prediction image for {img_path}: {e}")
         raise
@@ -101,7 +101,6 @@ def predict():
     file = request.files['image']
     filename = secure_filename(file.filename)
 
-    # Save original image
     original_path = os.path.join(ORIGINAL_FOLDER, filename)
     try:
         file.save(original_path)
@@ -110,7 +109,6 @@ def predict():
         return jsonify({"error": "Error saving image file."}), 500
 
     try:
-        # Preprocess & predict
         x = load_and_preprocess(original_path)
         preds = model.predict(x)
         proba = preds[0]
@@ -119,12 +117,10 @@ def predict():
         label = class_names[idx]
         label_text = f"{label} ({confidence * 100:.2f}%)"
 
-        # Buat gambar hasil prediksi
         predicted_name = f"pred_{filename}.png"
         predicted_path = os.path.join(PREDICT_FOLDER, predicted_name)
         create_prediction_image(original_path, label_text, predicted_path)
 
-        # Dapatkan rekomendasi via JOIN
         connection = get_db_connection()
         if not connection:
             return jsonify({"error": "Error connecting to database."}), 500
@@ -147,7 +143,6 @@ def predict():
         else:
             rec = "No recommendations available."
 
-        # Siapkan response JSON
         result = {
             "prediction": label,
             "confidence": round(confidence * 100, 2),

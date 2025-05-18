@@ -27,7 +27,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        
         return redirect()->intended(route('home', absolute: false));
     }
 
@@ -43,5 +43,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        notify()->success('Selamat datang kembali, ' . $user->name . '!');
     }
 }

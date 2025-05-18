@@ -33,26 +33,20 @@
     <div class="bg-white p-8 rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
 
-      {{-- ALERT UNTUK BERHASIL RESET PASSWORD --}}
       @if (session('status'))
         <div class="mb-4">
           <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
             <strong class="font-bold">Berhasil!</strong>
-            <span class="block sm:inline">
-              {{ session('status') }}
-            </span>
+            <span class="block sm:inline">{{ session('status') }}</span>
           </div>
         </div>
       @endif
 
-      {{-- ALERT UNTUK ERROR LOGIN --}}
       @if ($errors->any())
         <div class="mb-4">
           <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">
             <strong class="font-bold">Login gagal!</strong>
-            <span class="block sm:inline">
-              {{ $errors->first() }}
-            </span>
+            <span class="block sm:inline">{{ $errors->first() }}</span>
           </div>
         </div>
       @endif
@@ -74,7 +68,7 @@
             <input type="checkbox" name="remember" class="form-checkbox text-blue-500" />
             <span class="ml-2 text-gray-700">Remember Me</span>
           </label>
-          @if(Route::has('password.request'))
+          @if(app('router')->has('password.request'))
             <a href="{{ route('password.request') }}" class="text-sm text-blue-500 hover:underline">Lupa Password?</a>
           @endif
         </div>
@@ -85,7 +79,6 @@
       </form>
 
       <p class="mt-4 text-center text-gray-600">
-        
         <a href="{{ route('register') }}" class="text-blue-500 hover:underline">Belum punya akun?</a>
       </p>
     </div>

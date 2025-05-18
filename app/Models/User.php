@@ -60,4 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Diagnosis::class);
     }
 
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'users_id');
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
 }

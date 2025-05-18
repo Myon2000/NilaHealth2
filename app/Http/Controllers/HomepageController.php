@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
+use App\Models\Jadwal;
 
 // Uncomment when models exist
 // use App\Models\Schedule;
@@ -18,23 +19,17 @@ class HomepageController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-
-        // Fetch schedules created by the logged-in user (placeholder if Schedule model not implemented)
-        $schedules = collect();
-        // if (class_exists(\App\Models\Schedule::class)) {
-        //     $schedules = Schedule::where('user_id', $user->id)->get();
-        // }
-
-        // Fetch latest articles for preview (placeholder if Article model not implemented)
-        $articles = collect();
-        // if (class_exists(\App\Models\Article::class)) {
-        //     $articles = Article::latest()->take(3)->get();
-        // }
+        
+        // Fetch jadwal for logged in user
+        $schedules = Jadwal::where('users_id', $user->id)
+                        ->orderBy('tanggal', 'asc')
+                        ->orderBy('waktu', 'asc')
+                        ->take(5) // Limit 5 jadwal terbaru
+                        ->get();
 
         return view('frontend.pages.homepage.homepage', [
-            'user'      => $user,
-            'schedules' => $schedules,
-            'articles'  => $articles,
+            'user' => $user,
+            'schedules' => $schedules
         ]);
     }
 }

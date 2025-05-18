@@ -8,7 +8,7 @@
   <!-- Navigation Links (Desktop) -->
   <div class="hidden md:flex items-center space-x-8">
     <a href="{{ route('diagnosis.form') }}" class="hover:text-blue-400 transition">Diagnosis</a>
-    <a href="#schedule" class="hover:text-blue-400 transition">Schedule</a>
+    <a href="{{ route('home') }}#schedule" class="hover:text-blue-400 transition">Schedule</a>
     <a href="{{ route('home') }}#article" class="hover:text-blue-400 transition">Article</a>
 
     <!-- Profile Dropdown -->

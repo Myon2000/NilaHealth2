@@ -1,84 +1,612 @@
 @extends('frontend.layouts.app')
-
 @section('extraCSS')
-  <style>
-    @keyframes fadeSlideUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
+<style>
+    /* Mobile-first responsive styles */
+    @media (max-width: 640px) {
+        /* Hero Section */
+        .hero-title {
+            font-size: 2.5rem !important;
+            line-height: 1.2 !important;
+        }
+        
+        .hero-description {
+            font-size: 1rem !important;
+            padding: 0 1rem;
+        }
+        
+        /* Stats Section */
+        .stats-container {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+            padding: 0 1rem;
+        }
+        
+        /* Schedule Section */
+        .schedule-container {
+            padding: 1rem !important;
+        }
+        
+        .schedule-title {
+            font-size: 1.875rem !important;
+            line-height: 2.25rem !important;
+        }
+        
+        .schedule-card {
+            padding: 1rem !important;
+        }
+        
+        /* Blog Section */
+        .blog-container {
+            padding: 1rem !important;
+        }
+        
+        .blog-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        
+        /* Modal */
+        .modal-content {
+            margin: 1rem !important;
+            padding: 1rem !important;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem !important;
+        }
+        
+        /* Form Elements */
+        input, select, textarea {
+            font-size: 16px !important; /* Prevents zoom on iOS */
+        }
+        
+        /* Buttons */
+        .cta-button {
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+
+    /* Tablet Responsive Styles */
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .hero-title {
+            font-size: 3rem !important;
+        }
+        
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        
+        .blog-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+
+    /* Better Touch Targets for Mobile */
+    @media (max-width: 640px) {
+        button, 
+        .button,
+        a {
+            min-height: 44px !important; /* Minimum touch target size */
+            padding: 0.75rem 1rem !important;
+        }
+        
+        .card-actions {
+            display: flex !important;
+            justify-content: space-around !important;
+            padding-top: 1rem !important;
+        }
+        
+        .card-actions button {
+            padding: 0.5rem 1rem !important;
+            margin: 0 0.25rem !important;
+        }
+    }
+
+    /* Improved Mobile Navigation */
+    @media (max-width: 640px) {
+        .nav-menu {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px) !important;
+            padding: 0.5rem !important;
+            display: flex !important;
+            justify-content: space-around !important;
+            box-shadow: 0 -1px 10px rgba(0,0,0,0.1) !important;
+            z-index: 50 !important;
+        }
+    }
+
+    /* Loading States for Mobile */
+    @media (max-width: 640px) {
+        .loading-skeleton {
+            opacity: 0.7 !important;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.5; }
+        }
+    }
+
+    #schedule {
+        background-color: rgb(249, 250, 251);
+    }
+
+    .dark .waves .parallax > use:nth-child(1) {
+        fill: rgba(17, 24, 39, 0.7); /* dark:bg-gray-900 dengan opacity */
+    }
+    .dark .waves .parallax > use:nth-child(2) {
+        fill: rgba(17, 24, 39, 0.8);
+    }
+    .dark .waves .parallax > use:nth-child(3) {
+        fill: rgba(17, 24, 39, 0.9);
+    }
+    .dark .waves .parallax > use:nth-child(4) {
+        fill: rgb(17, 24, 39); /* dark:bg-gray-900 solid */
+    }
+
+    /* Update wave transition untuk dark mode */
+    .dark .wave-transition {
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            rgba(17, 24, 39, 0.9)
+        );
+    }
+
+    /* Wave Animation */
+    .waves {
+        position: relative;
+        width: 100%;
+        height: 15vh;
+        margin-bottom: -7px;
+        min-height: 100px;
+        max-height: 150px;
+    }
+
+    .parallax > use {
+        animation: moveWave 25s cubic-bezier(.55,.5,.45,.5) infinite;
+    }
+
+    .parallax > use:nth-child(1) {
+        animation-delay: -2s;
+        animation-duration: 7s;
+        opacity: 0.7;
+    }
+
+    .parallax > use:nth-child(2) {
+        animation-delay: -3s;
+        animation-duration: 10s;
+        opacity: 0.5;
+    }
+
+    .parallax > use:nth-child(3) {
+        animation-delay: -4s;
+        animation-duration: 13s;
+        opacity: 0.3;
+    }
+
+    .parallax > use:nth-child(4) {
+        animation-delay: -5s;
+        animation-duration: 20s;
         opacity: 1;
-        transform: translateY(0);
-      }
     }
 
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    .waves .parallax > use:nth-child(1) {
+        fill: rgba(249, 250, 251, 0.7); /* lighter color */
+    }
+    .waves .parallax > use:nth-child(2) {
+        fill: rgba(249, 250, 251, 0.8);
+    }
+    .waves .parallax > use:nth-child(3) {
+        fill: rgba(249, 250, 251, 0.9);
+    }
+    .waves .parallax > use:nth-child(4) {
+        fill: #f9fafb; /* match with schedule section background */
     }
 
-    .fade-in.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes moveWave {
+        0% {
+            transform: translate3d(-90px,0,0);
+        }
+        100% { 
+            transform: translate3d(85px,0,0);
+        }
     }
 
-    .hero-fade {
-      opacity: 0;
-      animation: fadeSlideUp 1s ease forwards;
+    /* Wave Container */
+    .wave-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+        transform: rotate(180deg);
     }
 
-    .delay-1 { animation-delay: 0.3s; }
-    .delay-2 { animation-delay: 0.6s; }
-    .delay-3 { animation-delay: 0.9s; }
-  </style>
+    /* Enhanced Wave Effects */
+    .wave-animation {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .wave-animation::before,
+    .wave-animation::after {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 40%;
+    }
+
+    .wave-animation::before {
+        animation: waveRotate 8s linear infinite;
+    }
+
+    .wave-animation::after {
+        animation: waveRotate 15s linear infinite;
+    }
+
+    .wave-transition {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        margin-top: -150px;
+        pointer-events: none;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            rgb(249, 250, 251, 0.9)
+        );
+    }
+
+    .wave-transition,
+    .schedule-gradient {
+        transition: background 0.3s ease;
+    }
+
+    .dark .schedule-gradient {
+        background: linear-gradient(
+            to bottom,
+            rgb(17, 24, 39) 0%,    /* dark:bg-gray-900 */
+            rgb(31, 41, 55) 100%   /* dark:bg-gray-800 */
+        );
+    }
+    .schedule-gradient {
+        background: linear-gradient(
+            to bottom,
+            rgb(249, 250, 251) 0%,
+            rgb(243, 244, 246) 100%
+        );
+    }
+
+    @keyframes waveRotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .waves {
+            height: 40px;
+            min-height: 40px;
+        }
+        
+        .wave-animation::before,
+        .wave-animation::after {
+            top: -65%;
+        }
+    }
+    .waves .parallax > use {
+        transition: fill 0.3s ease;
+    }
+
+    @media (max-width: 480px) {
+        .waves {
+            height: 30px;
+            min-height: 30px;
+        }
+    }
+
+    /* Wave Glow Effect */
+    .wave-glow {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            rgba(255, 255, 255, 0.1)
+        );
+        filter: blur(10px);
+    }
+
+    /* Add these to your existing animations section */
+    @keyframes waveFlow {
+        0% {
+            background-position-x: 0;
+        }
+        100% {
+            background-position-x: 200%;
+        }
+    }
+
+    .wave-background {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: linear-gradient(
+            45deg,
+            rgba(255,255,255,0.1) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255,255,255,0.1) 50%,
+            rgba(255,255,255,0.1) 75%,
+            transparent 75%,
+            transparent
+        );
+        background-size: 30px 30px;
+        animation: waveFlow 10s linear infinite;
+        opacity: 0.3;
+    }
+
+    /* Enhance existing wave classes */
+    .waves svg {
+        width: 100%;
+        height: 100%;
+        transform-origin: bottom;
+        animation: waveRise 1s ease-out forwards;
+    }
+
+    @keyframes waveRise {
+        from {
+            transform: scaleY(0);
+            opacity: 0;
+        }
+        to {
+            transform: scaleY(1);
+            opacity: 1;
+        }
+    }
+
+    /* Add shimmer effect */
+    .wave-shimmer {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            left: -100%;
+        }
+        100% {
+            left: 200%;
+        }
+    }
+</style>
 @endsection
 
 @section('content')
   <!-- Hero Section -->
-  <section class="snap-start min-h-screen bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-900 dark:to-gray-800 flex items-center relative transition-colors duration-300">
-    <div class="absolute inset-0">
-      <img src="/assets/hero/wave.svg" class="w-full h-full object-cover opacity-30" alt="Wave background">
-      <div class="absolute top-20 left-16 w-40 h-40 rounded-full bg-blue-700 dark:bg-gray-700 opacity-20 animate-pulse"></div>
-      <div class="absolute bottom-16 right-20 w-52 h-52 rounded-full bg-blue-500 dark:bg-gray-600 opacity-15 animate-pulse"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-7xl mx-auto w-full px-4 text-center">
-      <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 hero-fade delay-1">
-        Solusi Cerdas untuk Nila Sehat
-      </h1>
-      <p class="text-white text-lg sm:text-xl max-w-3xl mx-auto mb-10 hero-fade delay-2">
-        NilaHealth adalah platform cerdas yang membantu petani ikan dalam mendeteksi penyakit, 
-        menganalisis kondisi ikan nila, dan mengelola kesehatan kolam secara efisien.
-      </p>
-      <a href="{{ route('diagnosis.form') }}" 
-        class="btn-shine inline-block bg-white dark:bg-gray-100 text-blue-700 dark:text-blue-800 
-                font-semibold px-8 py-3 rounded-full shadow-lg transition transform hero-fade delay-3">
-          Try Out Now
-      </a>
-    </div>  
+  <section class="snap-start min-h-screen bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-900 dark:to-gray-800 flex items-center relative transition-colors duration-300 overflow-hidden">
+    <!-- Animated Background Elements -->
+      <div class="absolute inset-0">
+          <!-- Animated Wave -->
+          <div class="absolute bottom-0 w-full overflow-hidden">
+              <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                  viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                  <defs>
+                      <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                  </defs>
+                  <g class="parallax">
+                      <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7)" class="dark:fill-gray-800/70" />
+                      <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" class="dark:fill-gray-800/50" />
+                      <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" class="dark:fill-gray-800/30" />
+                      <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" class="dark:fill-gray-900" />
+                  </g>
+              </svg>
+          </div>
+
+          <!-- Floating Elements -->
+          <div class="absolute top-20 left-16 w-40 h-40 bg-white/5 rounded-full blur-xl animate-pulse"></div>
+          <div class="absolute bottom-16 right-20 w-52 h-52 bg-white/5 rounded-full blur-xl animate-pulse delay-1000"></div>
+          
+          <!-- Animated Particles -->
+          <div class="absolute inset-0">
+              <div class="particles-container"></div>
+          </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <!-- Hero Badge -->
+          <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm mb-8 hero-fade">
+              <span class="animate-pulse w-2 h-2 rounded-full bg-green-400 mr-2"></span>
+              <span class="text-white/90 text-sm font-medium">AI-Powered Fish Health Management</span>
+          </div>
+
+          <!-- Hero Title -->
+          <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 hero-fade delay-1 hero-title">
+              <span class="inline-block">Solusi Cerdas</span>
+              <span class="inline-block bg-gradient-to-r from-blue-200 to-blue-100 text-transparent bg-clip-text">
+                  untuk Nila Sehat
+              </span>
+          </h1>
+
+          <!-- Hero Description -->
+          <p class="text-white/80 text-lg sm:text-xl max-w-3xl mx-auto mb-10 hero-fade delay-2">
+              NilaHealth adalah platform cerdas yang membantu petani ikan dalam mendeteksi penyakit, 
+              menganalisis kondisi ikan nila, dan mengelola kesehatan kolam secara efisien.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 hero-fade delay-3">
+              <a href="{{ route('diagnosis.form') }}" 
+                class="group relative inline-flex items-center px-8 py-3 bg-white text-blue-700 rounded-full overflow-hidden transform hover:scale-105 transition-all duration-300">
+                  <span class="absolute inset-0 bg-gradient-to-r from-blue-100 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                  <span class="relative flex items-center">
+                      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                      </svg>
+                      Mulai Diagnosis
+                  </span>
+              </a>
+          </div>
+
+          <!-- Stats Section -->
+          <div class="grid md:grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto hero-fade delay-4 stats-container">
+              <!-- Empty column for centering -->
+              <div class="hidden md:block"></div>
+              
+              <!-- Stats items -->
+              <div class="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                  <div class="text-3xl font-bold text-white mb-1">95%</div>
+                  <div class="text-white/70">Akurasi Diagnosis</div>
+              </div>
+              
+              <div class="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                  <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                  <div class="text-white/70">Monitoring</div>
+              </div>
+              
+              <!-- Empty column for centering -->
+              <div class="hidden md:block"></div>
+          </div>
   </section>
 
+<div class="wave-transition"></div>
+
 <!-- Schedule Section -->
-<!-- Schedule Section -->
-<section id="schedule" class="snap-start min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
-    <div class="max-w-screen-xl mx-auto px-4 py-16 text-center fade-in fade-delay-2">
-        <!-- Section Header -->
-        <div class="mb-12">
-            <span class="text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wider uppercase">Pengingat Penanganan</span>
-            <h2 class="text-4xl font-bold text-gray-800 dark:text-white mt-2 mb-4">Jadwal Penanganan</h2>
-            <div class="w-20 h-1 bg-blue-600 mx-auto mb-4"></div>
-            <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
-                Kelola jadwal penanganan ikan nila Anda dengan mudah dan terorganisir
-            </p>
+<section id="schedule" class="snap-start min-h-screen relative flex items-center justify-center schedule-gradient transition-colors duration-300 overflow-hidden -mt-1 py-8 sm:py-16">
+    <div class="absolute inset-0 pointer-events-none">
+        <!-- Animated Circles -->
+        <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div class="absolute top-40 right-10 w-64 h-64 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-20 left-1/3 w-64 h-64 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+
+        <!-- Floating Icons -->
+        <div class="absolute top-1/4 left-10 animate-float-slow">
+            <svg class="w-12 h-12 text-blue-200 dark:text-blue-800" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
         </div>
+        <div class="absolute bottom-1/4 right-10 animate-float-slow animation-delay-2000">
+            <svg class="w-12 h-12 text-purple-200 dark:text-purple-800" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="max-w-screen-xl mx-auto px-4 py-16 relative z-10 schedule-container">
+        <!-- Section Header with enhanced styling -->
+        <div class="text-center mb-12 fade-up">
+          <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mt-2 mb-4 relative inline-block">
+              <!-- Pindahkan badge ke sini -->
+              <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wider uppercase rounded-full">
+                  Pengingat Penanganan
+              </span>
+              Jadwal Penanganan
+              <div class="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
+          </h2>
+          <div class="flex items-center justify-center space-x-2 mb-4">
+              <span class="w-8 h-1 bg-blue-600 rounded-full"></span>
+              <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
+              <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto mb-8">
+              Kelola jadwal penanganan ikan nila Anda dengan mudah dan terorganisir
+          </p>
+            
+            <!-- Enhanced Add Schedule Button -->
+            <button onclick="openModal()" 
+                    class="group inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50">
+                <span class="relative flex items-center">
+                    <span class="absolute w-full h-full bg-white/20 rounded-full animate-ping"></span>
+                    <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                </span>
+                <span class="relative">Tambah Jadwal Baru</span>
+            </button>
+        </div>
+
+        <!-- Add these styles to your CSS -->
+        <style>
+            @keyframes blob {
+                0% { transform: translate(0px, 0px) scale(1); }
+                33% { transform: translate(30px, -50px) scale(1.1); }
+                66% { transform: translate(-20px, 20px) scale(0.9); }
+                100% { transform: translate(0px, 0px) scale(1); }
+            }
+            
+            .animate-blob {
+                animation: blob 7s infinite;
+            }
+            
+            .animation-delay-2000 {
+                animation-delay: 2s;
+            }
+            
+            .animation-delay-4000 {
+                animation-delay: 4s;
+            }
+            
+            .animate-float-slow {
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-20px); }
+                100% { transform: translateY(0px); }
+            }
+
+            .bg-grid-pattern {
+                background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px);
+                background-size: 30px 30px;
+            }
+        </style>
         
-        @if($schedules && $schedules->count() > 0)
+        @if($jadwals && $jadwals->count() > 0)
             <!-- Schedule Cards Container -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($schedules as $jadwal)
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl p-6 transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 relative">
+              <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
+
+                @foreach($jadwals as $jadwal)
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl p-4 sm:p-6 transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700 relative overflow-hidden group fade-up">
+                      <div class="absolute top-0 right-0 w-20 h-20 bg-blue-500/10 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-300"></div>
+
                         <!-- Date and Time Header -->
                         <div class="flex items-center justify-between mb-4">
                             <div class="bg-blue-100 dark:bg-blue-900/50 rounded-full px-4 py-2">
@@ -126,45 +654,209 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="flex items-center justify-end mt-4 space-x-2">
+                        <button onclick="editJadwal({{ $jadwal->id }})" 
+                                class="text-blue-600 hover:text-blue-900 dark:hover:text-blue-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </button>
+                        <button onclick="deleteJadwal({{ $jadwal->id }})"
+                                class="text-red-600 hover:text-red-900 dark:hover:text-red-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
                     </div>
+                    </div>
+
                 @endforeach
-            </div>
-            
-            <!-- View All Button -->
-            <div class="mt-12">
-                <a href="{{ route('jadwal.index') }}" 
-                   class="inline-flex items-center px-8 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 group">
-                    <span>Lihat Semua Jadwal</span>
-                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </a>
+
             </div>
         @else
-            <!-- Empty State -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-md mx-auto border border-gray-100 dark:border-gray-700">
-                <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-4">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Tidak ada jadwal</h3>
-                    <p class="text-gray-500 dark:text-gray-400 mb-6">
-                        Mulai buat jadwal penanganan untuk memantau kesehatan ikan nila Anda.
-                    </p>
-                    <a href="{{ route('jadwal.index') }}" 
-                       class="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 group">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span>Tambah Jadwal</span>
-                    </a>
-                </div>
+            <!-- Empty State with enhanced styling -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 max-w-lg mx-auto border border-gray-100 dark:border-gray-700 relative overflow-hidden fade-up">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full transform translate-x-16 -translate-y-16"></div>
+    <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/5 rounded-tr-full transform -translate-x-16 translate-y-16"></div>
+    
+    <div class="text-center relative z-10">
+        <!-- Enhanced icon -->
+        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
+            <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
+            <svg class="w-12 h-12 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+        </div>
+
+        <!-- Enhanced text content -->
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Belum Ada Jadwal
+        </h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
+            Mulai atur jadwal penanganan untuk memantau kesehatan ikan nila Anda. 
+            Dapatkan pengingat tepat waktu untuk perawatan yang optimal.
+        </p>
+
+        <!-- Enhanced button -->
+        <button onclick="openModal()" 
+                class="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 group relative">
+            <!-- Ping effect -->
+            <span class="absolute inset-0 rounded-full bg-white/20 group-hover:animate-ping opacity-75"></span>
+            
+            <!-- Icon -->
+            <span class="relative flex items-center">
+                <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span class="relative">Buat Jadwal Pertama</span>
+            </span>
+        </button>
+
+        <!-- Decorative dots -->
+        <div class="absolute bottom-4 right-4 flex space-x-1">
+            <div class="w-2 h-2 rounded-full bg-blue-500/30"></div>
+            <div class="w-2 h-2 rounded-full bg-purple-500/30"></div>
+            <div class="w-2 h-2 rounded-full bg-pink-500/30"></div>
+        </div>
+    </div>
+</div>
             </div>
         @endif
     </div>
 </section>
+
+  <!-- Modal for Adding Schedule -->
+<div id="jadwalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal-backdrop">
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl transform modal-content">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span>Tambah Jadwal</span>
+            </h2>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+    <!-- Form -->
+    <form id="jadwalForm" onsubmit="handleSubmit(event)" class="space-y-6">
+      @csrf
+      <input type="hidden" id="jadwal_id">
+
+      <!-- Tanggal & Waktu Group -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Tanggal -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Tanggal
+          </label>
+          <input type="date" id="tanggal" name="tanggal" required
+                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <!-- Waktu -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Waktu
+          </label>
+          <input type="time" id="waktu" name="waktu" required
+                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+        </div>
+      </div>
+
+      <!-- Keterangan -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+          Keterangan
+        </label>
+        <textarea id="keterangan" name="keterangan" rows="3" required
+                  class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
+      </div>
+
+      <!-- Pengulangan -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Pengulangan
+        </label>
+        <select id="recurrence_type" name="recurrence_type" onchange="toggleDays()"
+                class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+          <option value="once">Sekali</option>
+          <option value="daily">Setiap Hari</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+
+      <!-- Custom days -->
+    <div id="daysContainer" class="hidden space-y-3">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Pilih Hari
+        </label>
+        <div class="grid grid-cols-3 gap-3">
+            @foreach(['mon'=>'Senin','tue'=>'Selasa','wed'=>'Rabu','thu'=>'Kamis','fri'=>'Jumat','sat'=>'Sabtu','sun'=>'Minggu'] as $key=>$lbl)
+            <label class="day-label relative flex items-center justify-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-all">
+                <input type="checkbox" name="recurrence_days[]" value="{{ $key }}"
+                    class="day-checkbox absolute opacity-0 peer"
+                    onchange="toggleDayHighlight(this)">
+                <span class="text-sm text-gray-700 dark:text-gray-300 peer-checked:text-blue-600 dark:peer-checked:text-blue-400">{{ $lbl }}</span>
+                <div class="absolute inset-0 bg-blue-50 dark:bg-blue-900/20 rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+            </label>
+            @endforeach
+        </div>
+    </div>
+
+      <!-- Remind before -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+          </svg>
+          Ingatkan Sebelum
+        </label>
+        <div class="flex items-center">
+          <input type="number" id="remind_before" name="remind_before" min="0" required
+                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+          <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">menit</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-3 pt-6">
+        <button type="button" onclick="closeModal()"
+                class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors">
+          Batal
+        </button>
+        <button type="submit"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          Simpan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <!-- Blog Preview Section -->
   <section class="snap-start min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
@@ -173,7 +865,7 @@
       <p class="text-center text-gray-600 dark:text-gray-300 mb-10">
         Cari tahu berbagai informasi, tips, dan trik menarik seputar budidaya ikan.
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
         <!-- Card 1 -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
           <img src="/images/blog1.jpg" alt="Blog 1" class="w-full h-48 object-cover">
@@ -221,6 +913,19 @@
 
 @section('extraJS')
 <script>
+  function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-4 right-4 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg z-50 notification-enter`;
+      toast.textContent = message;
+      
+      document.body.appendChild(toast);
+      
+      // Remove notification after delay
+      setTimeout(() => {
+          toast.classList.replace('notification-enter', 'notification-leave');
+          setTimeout(() => toast.remove(), 500);
+      }, 2500);
+  }
   document.addEventListener("DOMContentLoaded", function () {
     const faders = document.querySelectorAll('.fade-in');
 
@@ -240,6 +945,162 @@
     faders.forEach(fadeEl => {
       appearOnScroll.observe(fadeEl);
     });
+  });
+    function toggleDays() {
+    const val = document.getElementById('recurrence_type').value;
+    document.getElementById('daysContainer')
+            .classList.toggle('hidden', val!=='custom');
+  }
+
+  function openModal(isEdit = false) {
+    const modal = document.getElementById('jadwalModal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    if (!isEdit) {
+        document.getElementById('jadwalForm').reset();
+        document.getElementById('jadwal_id').value = '';
+        document.getElementById('daysContainer').classList.add('hidden');
+        document.getElementById('modalTitle').textContent = 'Tambah Jadwal';
+    }
+    
+    modal.classList.replace('hidden', 'flex');
+    modal.classList.add('modal-enter');
+    modalContent.classList.add('modal-enter-content');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('jadwalModal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modal.classList.add('modal-leave');
+    modalContent.classList.add('modal-leave-content');
+    
+    setTimeout(() => {
+        modal.classList.replace('flex', 'hidden');
+        modal.classList.remove('modal-leave');
+        modalContent.classList.remove('modal-leave-content');
+        // Reset form
+        document.getElementById('jadwalForm').reset();
+        document.getElementById('jadwal_id').value = '';
+        document.getElementById('daysContainer').classList.add('hidden');
+    }, 300);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const keterangan = document.getElementById('keterangan').value.trim();
+    if (!keterangan) {
+        showToast('Keterangan tidak boleh kosong', 'error');
+        return;
+    }
+    const remind_before = parseInt(document.getElementById('remind_before').value);
+    if (isNaN(remind_before) || remind_before < 0) {
+        showToast('Waktu pengingat tidak valid', 'error');
+        return;
+    }
+    const form = e.target;
+    const id = document.getElementById('jadwal_id').value;
+    const url = id? `/jadwal/${id}` : `/jadwal`;
+    const method = id? 'PUT':'POST';
+
+    let payload = {
+      tanggal: document.getElementById('tanggal').value,
+      waktu:    form.waktu.value,
+      keterangan: form.keterangan.value,
+      recurrence_type: form.recurrence_type.value,
+      recurrence_days: [],
+      remind_before: parseInt(form.remind_before.value)
+    };
+    if(payload.recurrence_type==='custom'){
+      document.querySelectorAll('input[name="recurrence_days[]"]:checked')
+              .forEach(cb=> payload.recurrence_days.push(cb.value));
+    }
+
+    const res = await fetch(url, {
+      method, 
+      headers:{
+        'Content-Type':'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify(payload)
+    });
+    const j = await res.json();
+    if(!res.ok) return showToast(j.message||'Gagal menyimpan');
+    showToast(j.message);
+    setTimeout(()=>location.reload(),800);
+  }
+
+  // ====================================
+  // EDIT: ambil data lama, prefill & modalTitle = "Edit Jadwal"
+  // ====================================
+    async function editJadwal(id) {
+      // Buka modal dulu
+      document.getElementById('jadwalModal').classList.replace('hidden','flex');
+      
+      const res = await fetch(`/jadwal/${id}`);
+      const data = await res.json();
+      if(!res.ok) {
+          closeModal();
+          return showToast(data.message||'Gagal ambil data');
+      }
+
+      // Set judul
+      document.getElementById('modalTitle').textContent = 'Edit Jadwal';
+      
+      // Format tanggal ke YYYY-MM-DD untuk input type="date"
+      const tanggal = new Date(data.tanggal);
+      const formattedTanggal = tanggal.toISOString().split('T')[0];
+      
+      // Isi form dengan data
+      document.getElementById('jadwal_id').value = data.id;
+      document.getElementById('tanggal').value = formattedTanggal; // Gunakan format yang sudah dikonversi
+      document.getElementById('waktu').value = data.waktu;
+      document.getElementById('keterangan').value = data.keterangan;
+      document.getElementById('recurrence_type').value = data.recurrence_type;
+      document.getElementById('remind_before').value = data.remind_before;
+      
+      // Handle recurrence days
+      toggleDays();
+      document.querySelectorAll('input[name="recurrence_days[]"]').forEach(cb => {
+          cb.checked = data.recurrence_days?.includes(cb.value) || false;
+          // Trigger highlight jika checked
+          if(cb.checked) {
+              toggleDayHighlight(cb);
+          }
+      });
+  }
+
+  async function deleteJadwal(id) {
+    if(!confirm('Yakin?')) return;
+    const res = await fetch(`/jadwal/${id}`, {
+      method:'DELETE',
+      headers:{ 'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content }
+    });
+    const j = await res.json();
+    if(!res.ok) return showToast(j.message||'Gagal hapus');
+    showToast(j.message);
+    setTimeout(()=>location.reload(),500);
+  }
+  function toggleDayHighlight(checkbox) {
+    const label = checkbox.closest('.day-label');
+    if (checkbox.checked) {
+        label.classList.add('border-blue-500', 'dark:border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+    } else {
+        label.classList.remove('border-blue-500', 'dark:border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+    }
+    }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('jadwalModal');
+        if (!modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    }
+  });
+  document.getElementById('jadwalModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+          closeModal();
+      }
   });
 </script>
 @endsection

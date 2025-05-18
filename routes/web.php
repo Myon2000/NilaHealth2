@@ -82,8 +82,10 @@ Route::middleware(['auth','verified'])
     });
 
     // Jadwal CRUD via AJAX (termasuk show)
-    Route::resource('jadwal', JadwalController::class)
-         ->except(['create','edit']);
+    Route::post('/jadwal', [HomepageController::class, 'store'])->name('jadwal.store');
+    Route::get('/jadwal/{jadwal}', [HomepageController::class, 'show'])->name('jadwal.show');
+    Route::put('/jadwal/{jadwal}', [HomepageController::class, 'update'])->name('jadwal.update');
+    Route::delete('/jadwal/{jadwal}', [HomepageController::class, 'destroy'])->name('jadwal.destroy');
 
     // Notifications
 //     Route::prefix('notifications')->name('notifications.')->group(function(){

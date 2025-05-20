@@ -9,7 +9,10 @@ use App\Http\Controllers\{
     DiagnosisController,
     Admin\DiagnosisController as AdminDiagnosisController,
     JadwalController,
-    NotificationController
+    NotificationController,
+    ArticleController,
+    CommentController,
+    Admin\ArticleController as AdminArticleController,
 };
 use App\Models\Diagnosis;
 
@@ -39,10 +42,12 @@ Route::middleware('auth')
      ->group(function () {
          Route::get('dashboard', [AdminController::class, 'index'])
               ->name('dashboard');
-         Route::resource('users', UserController::class)
-              ->only(['index','destroy']);
+         Route::get('users', [UserController::class, 'index'])->name('users.index');
+         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
          Route::get('diagnoses', [AdminDiagnosisController::class, 'index'])
               ->name('diagnoses');
+         Route::resource('articles', AdminArticleController::class);
+
      });
 
 /*
@@ -87,6 +92,12 @@ Route::middleware(['auth','verified'])
     Route::put('/jadwal/{jadwal}', [HomepageController::class, 'update'])->name('jadwal.update');
     Route::delete('/jadwal/{jadwal}', [HomepageController::class, 'destroy'])->name('jadwal.destroy');
 
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+    Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::post('/articles/{article}/comments', [ArticleController::class, 'storeComment'])->name('articles.comments.store');
+
+    Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     // Notifications
 //     Route::prefix('notifications')->name('notifications.')->group(function(){
 //         Route::get('/','index');

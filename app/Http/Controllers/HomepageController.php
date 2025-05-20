@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use App\Models\Jadwal;
 use Illuminate\Support\Facades\Log;
 use App\Models\Notification;
+use App\Models\Article;
 
 // Uncomment when models exist
 // use App\Models\Schedule;
@@ -26,7 +27,13 @@ class HomepageController extends Controller
                         ->orderBy('waktu', 'asc')
                         ->get();
 
-        return view('frontend.pages.homepage.homepage', compact('jadwals'));
+        // Tambahkan query untuk artikel
+        $latestArticles = Article::with('author')
+                                ->latest()
+                                ->take(3)
+                                ->get();
+
+        return view('frontend.pages.homepage.homepage', compact('jadwals', 'latestArticles'));
     }
     public function store(Request $request)
     {

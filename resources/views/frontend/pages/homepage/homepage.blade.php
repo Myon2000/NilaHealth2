@@ -1,6 +1,76 @@
 @extends('frontend.layouts.app')
 @section('extraCSS')
 <style>
+    /* Modal Animations */
+    .modal-backdrop {
+        transition: opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+
+    .modal-backdrop.show {
+        opacity: 1;
+    }
+
+    .modal-content {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+    }
+
+    .modal-content.show {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    /* Custom Days Container Animation */
+    #daysContainer {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+    }
+
+    #daysContainer.show {
+        max-height: 300px;
+        opacity: 1;
+    }
+
+    /* Day checkbox animations */
+    .day-label {
+        transition: all 0.2s ease-in-out;
+        transform-origin: center;
+    }
+
+    .day-label:hover {
+        transform: translateY(-2px);
+    }
+
+    .day-checkbox:checked + span {
+        animation: checkPop 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    }
+
+    @keyframes checkPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Checkbox background animation */
+    .day-label .checkbox-bg {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
+    }
+
+    .day-checkbox:checked ~ .checkbox-bg {
+        animation: bgPulse 0.6s ease-in-out;
+    }
+
+    @keyframes bgPulse {
+        0% { transform: scale(0.8); opacity: 0; }
+        50% { transform: scale(1.1); opacity: 0.3; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
     /* Mobile-first responsive styles */
     @media (max-width: 640px) {
         /* Hero Section */
@@ -859,55 +929,71 @@
 </div>
 
   <!-- Blog Preview Section -->
-  <section class="snap-start min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
     <div class="max-w-screen-xl mx-auto px-4 fade-in fade-delay-3">
-      <h2 class="text-3xl font-bold text-gray-800 dark:text-white text-center mb-4">Blog</h2>
-      <p class="text-center text-gray-600 dark:text-gray-300 mb-10">
-        Cari tahu berbagai informasi, tips, dan trik menarik seputar budidaya ikan.
-      </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
-        <!-- Card 1 -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
-          <img src="/images/blog1.jpg" alt="Blog 1" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">
-              Antara Kontroversi dan Inovasi dalam AI Art
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 line-clamp-3 mb-4">
-              Fenomena mengubah foto jadi ilustrasi bergaya art menggunakan AI semakin populer...
-            </p>
-            <a href="#" class="text-blue-500 dark:text-blue-400 font-medium hover:underline">Read more →</a>
-          </div>
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white text-center mb-4">Artikel Terbaru</h2>
+        <p class="text-center text-gray-600 dark:text-gray-300 mb-10">
+            Cari tahu berbagai informasi, tips, dan trik menarik seputar budidaya ikan.
+        </p>
+
+        @if($latestArticles->count() > 0)
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
+            @foreach($latestArticles as $article)
+            <a href="{{ route('articles.show', $article) }}" 
+               class="group bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                            {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
+                               ($article->tag === 'perawatan' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 
+                               'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200') }}">
+                            {{ ucfirst($article->tag) }}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                        {{ Str::limit($article->judul, 50) }}
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        {{ Str::limit(strip_tags($article->isi), 100) }}
+                    </p>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            {{ $article->author->name }}
+                        </span>
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            {{ $article->created_at->diffForHumans() }}
+                        </span>
+                    </div>
+                </div>
+            </a>
+            @endforeach
         </div>
-        <!-- Card 2 -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
-          <img src="/images/blog2.jpg" alt="Blog 2" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">
-              Kamu Anak IT? Yuk Bangun Personal Branding!
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 line-clamp-3 mb-4">
-              Pernah mikir kenapa orang dengan skill IT mudah dapat peluang kerja dan magang?
-            </p>
-            <a href="#" class="text-blue-500 dark:text-blue-400 font-medium hover:underline">Read more →</a>
-          </div>
+
+        <div class="text-center mt-8">
+            <a href="{{ route('articles.index') }}" 
+               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
+                Lihat Semua Artikel
+                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
-        <!-- Card 3 -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
-          <img src="/images/blog3.jpg" alt="Blog 3" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="font-semibold text-lg mb-2 text-gray-800 dark:text-white">
-              AI dan Masa Depan Pekerja Industri
-            </h3>
-            <p class="text-gray-600 dark:text-gray-300 line-clamp-3 mb-4">
-              Bagaimana AI merubah proses manufaktur dan apa artinya bagi tenaga kerja?
-            </p>
-            <a href="#" class="text-blue-500 dark:text-blue-400 font-medium hover:underline">Read more →</a>
-          </div>
+        @else
+        <div class="text-center">
+            <p class="text-gray-500 dark:text-gray-400 mb-4">Belum ada artikel yang tersedia.</p>
         </div>
-      </div>
+        @endif
     </div>
-  </section>
 
 @endsection
 
@@ -946,45 +1032,75 @@
       appearOnScroll.observe(fadeEl);
     });
   });
+
     function toggleDays() {
-    const val = document.getElementById('recurrence_type').value;
-    document.getElementById('daysContainer')
-            .classList.toggle('hidden', val!=='custom');
-  }
-
-  function openModal(isEdit = false) {
-    const modal = document.getElementById('jadwalModal');
-    const modalContent = modal.querySelector('.modal-content');
-    
-    if (!isEdit) {
-        document.getElementById('jadwalForm').reset();
-        document.getElementById('jadwal_id').value = '';
-        document.getElementById('daysContainer').classList.add('hidden');
-        document.getElementById('modalTitle').textContent = 'Tambah Jadwal';
+        const container = document.getElementById('daysContainer');
+        const type = document.getElementById('recurrence_type').value;
+        
+        if (type === 'custom') {
+            container.style.display = 'block';
+            requestAnimationFrame(() => {
+                container.classList.add('show');
+                
+                // Animate each day label with delay
+                container.querySelectorAll('.day-label').forEach((label, index) => {
+                    setTimeout(() => {
+                        label.style.opacity = '0';
+                        label.style.transform = 'translateX(-20px)';
+                        requestAnimationFrame(() => {
+                            label.style.opacity = '1';
+                            label.style.transform = 'translateX(0)';
+                        });
+                    }, index * 50);
+                });
+            });
+        } else {
+            container.classList.remove('show');
+            setTimeout(() => {
+                container.style.display = 'none';
+            }, 400);
+        }
     }
-    
-    modal.classList.replace('hidden', 'flex');
-    modal.classList.add('modal-enter');
-    modalContent.classList.add('modal-enter-content');
-  }
 
-  function closeModal() {
-    const modal = document.getElementById('jadwalModal');
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modal.classList.add('modal-leave');
-    modalContent.classList.add('modal-leave-content');
-    
-    setTimeout(() => {
-        modal.classList.replace('flex', 'hidden');
-        modal.classList.remove('modal-leave');
-        modalContent.classList.remove('modal-leave-content');
-        // Reset form
-        document.getElementById('jadwalForm').reset();
-        document.getElementById('jadwal_id').value = '';
-        document.getElementById('daysContainer').classList.add('hidden');
-    }, 300);
-  }
+    function openModal(isEdit = false) {
+        const modal = document.getElementById('jadwalModal');
+        const backdrop = modal;
+        const content = modal.querySelector('.modal-content');
+        
+        // Reset form if not editing
+        if (!isEdit) {
+            document.getElementById('jadwalForm').reset();
+            document.getElementById('jadwal_id').value = '';
+            document.getElementById('daysContainer').classList.remove('show');
+            document.getElementById('modalTitle').textContent = 'Tambah Jadwal';
+        }
+        
+        // Show modal with animation
+        modal.style.display = 'flex';
+        requestAnimationFrame(() => {
+            backdrop.classList.add('show');
+            content.classList.add('show');
+        });
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('jadwalModal');
+        const backdrop = modal;
+        const content = modal.querySelector('.modal-content');
+        
+        // Hide with animation
+        backdrop.classList.remove('show');
+        content.classList.remove('show');
+        
+        // Wait for animation to finish before hiding
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.getElementById('jadwalForm').reset();
+            document.getElementById('jadwal_id').value = '';
+            document.getElementById('daysContainer').classList.remove('show');
+        }, 300);
+    }
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -1034,41 +1150,45 @@
   // EDIT: ambil data lama, prefill & modalTitle = "Edit Jadwal"
   // ====================================
     async function editJadwal(id) {
-      // Buka modal dulu
-      document.getElementById('jadwalModal').classList.replace('hidden','flex');
-      
-      const res = await fetch(`/jadwal/${id}`);
-      const data = await res.json();
-      if(!res.ok) {
-          closeModal();
-          return showToast(data.message||'Gagal ambil data');
-      }
+        // Open modal first with proper animation
+        openModal(true); // Pass true to indicate this is an edit operation
+        
+        const res = await fetch(`/jadwal/${id}`);
+        const data = await res.json();
+        if(!res.ok) {
+            closeModal();
+            return showToast(data.message || 'Gagal ambil data');
+        }
 
-      // Set judul
-      document.getElementById('modalTitle').textContent = 'Edit Jadwal';
-      
-      // Format tanggal ke YYYY-MM-DD untuk input type="date"
-      const tanggal = new Date(data.tanggal);
-      const formattedTanggal = tanggal.toISOString().split('T')[0];
-      
-      // Isi form dengan data
-      document.getElementById('jadwal_id').value = data.id;
-      document.getElementById('tanggal').value = formattedTanggal; // Gunakan format yang sudah dikonversi
-      document.getElementById('waktu').value = data.waktu;
-      document.getElementById('keterangan').value = data.keterangan;
-      document.getElementById('recurrence_type').value = data.recurrence_type;
-      document.getElementById('remind_before').value = data.remind_before;
-      
-      // Handle recurrence days
-      toggleDays();
-      document.querySelectorAll('input[name="recurrence_days[]"]').forEach(cb => {
-          cb.checked = data.recurrence_days?.includes(cb.value) || false;
-          // Trigger highlight jika checked
-          if(cb.checked) {
-              toggleDayHighlight(cb);
-          }
-      });
-  }
+        // Set modal title
+        document.getElementById('modalTitle').textContent = 'Edit Jadwal';
+        
+        // Format date
+        const tanggal = new Date(data.tanggal);
+        const formattedTanggal = tanggal.toISOString().split('T')[0];
+        
+        // Fill form with data
+        document.getElementById('jadwal_id').value = data.id;
+        document.getElementById('tanggal').value = formattedTanggal;
+        document.getElementById('waktu').value = data.waktu;
+        document.getElementById('keterangan').value = data.keterangan;
+        document.getElementById('recurrence_type').value = data.recurrence_type;
+        document.getElementById('remind_before').value = data.remind_before;
+        
+        // Handle custom days if needed
+        if(data.recurrence_type === 'custom') {
+            document.getElementById('daysContainer').style.display = 'block';
+            requestAnimationFrame(() => {
+                document.getElementById('daysContainer').classList.add('show');
+            });
+            
+            // Check appropriate days
+            document.querySelectorAll('input[name="recurrence_days[]"]').forEach(cb => {
+                cb.checked = data.recurrence_days?.includes(cb.value) || false;
+                if(cb.checked) toggleDayHighlight(cb);
+            });
+        }
+    }
 
   async function deleteJadwal(id) {
     if(!confirm('Yakin?')) return;
@@ -1081,13 +1201,18 @@
     showToast(j.message);
     setTimeout(()=>location.reload(),500);
   }
-  function toggleDayHighlight(checkbox) {
-    const label = checkbox.closest('.day-label');
-    if (checkbox.checked) {
-        label.classList.add('border-blue-500', 'dark:border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-    } else {
-        label.classList.remove('border-blue-500', 'dark:border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
-    }
+    function toggleDayHighlight(checkbox) {
+        const label = checkbox.closest('.day-label');
+        if (checkbox.checked) {
+            label.classList.add('border-blue-500', 'dark:border-blue-500');
+            // Add pop animation
+            label.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                label.style.transform = 'scale(1)';
+            }, 200);
+        } else {
+            label.classList.remove('border-blue-500', 'dark:border-blue-500');
+        }
     }
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {

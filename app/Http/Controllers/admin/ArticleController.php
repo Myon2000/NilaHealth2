@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -33,7 +34,7 @@ class ArticleController extends Controller
 
         Article::create([
             ...$validated,
-            'users_id' => auth()->id()
+            'users_id' => Auth::id()
         ]);
 
         return redirect()

@@ -1,6 +1,45 @@
 @extends('frontend.layouts.app')
 @section('extraCSS')
 <style>
+    .bg-gradient-radial {
+        background-image: radial-gradient(circle at center,
+            var(--tw-gradient-from) 0%,
+            var(--tw-gradient-via) 50%,
+            var(--tw-gradient-to) 100%
+        );
+    }
+
+    /* Smoother blob animations */
+    .animate-blob {
+        animation: blob 10s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes blob {
+        0% {
+            transform: translate(0px, 0px) scale(1);
+            opacity: 0.3;
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+            opacity: 0.4;
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+            opacity: 0.3;
+        }
+        100% {
+            transform: translate(0px, 0px) scale(1);
+            opacity: 0.3;
+        }
+    }
+
+    /* Enhanced grid pattern */
+    .bg-grid-pattern {
+        background-image: linear-gradient(to right, currentColor 1px, transparent 1px),
+                         linear-gradient(to bottom, currentColor 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+    
     /* Modal Animations */
     .modal-backdrop {
         transition: opacity 0.3s ease-in-out;
@@ -598,15 +637,15 @@
         </div>
     </div>
 
-    <div class="max-w-screen-xl mx-auto px-4 py-16 relative z-10 schedule-container">
+    <div class="max-w-screen-xl mx-auto px-4 relative z-10">
         <!-- Section Header with enhanced styling -->
-        <div class="text-center mb-12 fade-up">
+        <div class="text-center mb-8 sm:mb-12 fade-up">
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-4 transform hover:scale-105 transition-all duration-300">
+                Pengingat Penanganan
+            </span>
           <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mt-2 mb-4 relative inline-block">
               <!-- Pindahkan badge ke sini -->
-              <span class="absolute -top-8 left-1/2 transform -translate-x-1/2 inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-sm font-semibold tracking-wider uppercase rounded-full">
-                  Pengingat Penanganan
-              </span>
-              Jadwal Penanganan
+                Jadwal Penanganan
               <div class="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
           </h2>
           <div class="flex items-center justify-center space-x-2 mb-4">
@@ -614,20 +653,19 @@
               <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
               <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
           </div>
-          <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto mb-8">
-              Kelola jadwal penanganan ikan nila Anda dengan mudah dan terorganisir
-          </p>
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8 px-4 sm:px-0">
+                Kelola jadwal penanganan ikan nila Anda dengan mudah dan terorganisir
+            </p>
             
             <!-- Enhanced Add Schedule Button -->
             <button onclick="openModal()" 
-                    class="group inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50">
+                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg sm:rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-blue-500/50">
                 <span class="relative flex items-center">
-                    <span class="absolute w-full h-full bg-white/20 rounded-full animate-ping"></span>
-                    <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
+                    Tambah Jadwal Baru
                 </span>
-                <span class="relative">Tambah Jadwal Baru</span>
             </button>
         </div>
 
@@ -669,331 +707,397 @@
         </style>
         
         @if($jadwals && $jadwals->count() > 0)
-            <!-- Schedule Cards Container -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 relative">
-              <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"></div>
-
-                @foreach($jadwals as $jadwal)
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl p-4 sm:p-6 transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-700 relative overflow-hidden group fade-up">
-                      <div class="absolute top-0 right-0 w-20 h-20 bg-blue-500/10 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-300"></div>
-
-                        <!-- Date and Time Header -->
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="bg-blue-100 dark:bg-blue-900/50 rounded-full px-4 py-2">
-                                <span class="text-blue-800 dark:text-blue-200 text-sm font-medium">
-                                    {{ $jadwal->tanggal->format('d M Y') }}
-                                </span>
-                            </div>
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span class="text-gray-600 dark:text-gray-400 font-medium">
-                                    {{ $jadwal->waktu->format('H:i') }}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        <!-- Description -->
-                        <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">
-                            {{ $jadwal->keterangan }}
-                        </h3>
-                        
-                        <!-- Details -->
-                        <div class="space-y-3">
-                            <div class="flex items-center text-sm">
-                                <svg class="w-5 h-5 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                </svg>
-                                <span class="text-gray-600 dark:text-gray-400">
-                                    @if($jadwal->recurrence_type === 'once')
-                                        Sekali
-                                    @elseif($jadwal->recurrence_type === 'daily')
-                                        Setiap Hari
-                                    @else
-                                        {{ implode(', ', $jadwal->recurrence_days) }}
-                                    @endif
-                                </span>
-                            </div>
-                            <div class="flex items-center text-sm">
-                                <svg class="w-5 h-5 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                </svg>
-                                <span class="text-blue-600 dark:text-blue-400 font-medium">
-                                    {{ $jadwal->remind_before }} menit sebelumnya
-                                </span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-end mt-4 space-x-2">
-                        <button onclick="editJadwal({{ $jadwal->id }})" 
-                                class="text-blue-600 hover:text-blue-900 dark:hover:text-blue-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                        </button>
-                        <button onclick="deleteJadwal({{ $jadwal->id }})"
-                                class="text-red-600 hover:text-red-900 dark:hover:text-red-400">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                        </button>
+        <!-- Schedule Cards Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            @foreach($jadwals as $jadwal)
+            <!-- Updated card styling for better mobile view -->
+            <div class="bg-white dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl p-4 sm:p-6 transform transition-all duration-300 border border-gray-100/10 dark:border-gray-700/50">
+                <!-- Date and Time Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-blue-100 dark:bg-blue-900/50 rounded-full px-3 py-1.5">
+                        <span class="text-blue-800 dark:text-blue-200 text-sm font-medium">
+                            {{ $jadwal->tanggal->format('d M Y') }}
+                        </span>
                     </div>
+                    <div class="flex items-center">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">
+                            {{ $jadwal->waktu->format('H:i') }}
+                        </span>
                     </div>
+                </div>
 
-                @endforeach
+                <!-- Description with better spacing -->
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-3">
+                    {{ $jadwal->keterangan }}
+                </h3>
 
+                <!-- Updated details layout -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center text-sm">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span class="text-gray-600 dark:text-gray-400">
+                            @if($jadwal->recurrence_type === 'once')
+                                Sekali
+                            @elseif($jadwal->recurrence_type === 'daily')
+                                Setiap Hari
+                            @else
+                                {{ implode(', ', $jadwal->recurrence_days) }}
+                            @endif
+                        </span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="text-blue-600 dark:text-blue-400 text-sm font-medium">
+                            {{ $jadwal->remind_before }} menit sebelumnya
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Action buttons with better touch targets -->
+                <div class="flex items-center justify-end mt-4 space-x-3">
+                    <button onclick="editJadwal({{ $jadwal->id }})" 
+                            class="p-2 text-blue-600 hover:text-blue-800 dark:hover:text-blue-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                    </button>
+                    <button onclick="deleteJadwal({{ $jadwal->id }})"
+                            class="p-2 text-red-600 hover:text-red-800 dark:hover:text-red-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
+            @endforeach
+        </div>
         @else
             <!-- Empty State with enhanced styling -->
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 max-w-lg mx-auto border border-gray-100 dark:border-gray-700 relative overflow-hidden fade-up">
-    <!-- Decorative elements -->
-    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full transform translate-x-16 -translate-y-16"></div>
-    <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/5 rounded-tr-full transform -translate-x-16 translate-y-16"></div>
-    
-    <div class="text-center relative z-10">
-        <!-- Enhanced icon -->
-        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
-            <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
-            <svg class="w-12 h-12 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 max-w-lg mx-auto border border-gray-100 dark:border-gray-700 relative overflow-hidden fade-up">
+                    <!-- Decorative elements -->
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full transform translate-x-16 -translate-y-16"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/5 rounded-tr-full transform -translate-x-16 translate-y-16"></div>
+                    
+                    <div class="text-center relative z-10">
+                        <!-- Enhanced icon -->
+                        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
+                            <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
+                            <svg class="w-12 h-12 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
 
-        <!-- Enhanced text content -->
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Belum Ada Jadwal
-        </h3>
-        <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
-            Mulai atur jadwal penanganan untuk memantau kesehatan ikan nila Anda. 
-            Dapatkan pengingat tepat waktu untuk perawatan yang optimal.
-        </p>
+                        <!-- Enhanced text content -->
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                            Belum Ada Jadwal
+                        </h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto leading-relaxed">
+                            Mulai atur jadwal penanganan untuk memantau kesehatan ikan nila Anda. 
+                            Dapatkan pengingat tepat waktu untuk perawatan yang optimal.
+                        </p>
 
-        <!-- Enhanced button -->
-        <button onclick="openModal()" 
-                class="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 group relative">
-            <!-- Ping effect -->
-            <span class="absolute inset-0 rounded-full bg-white/20 group-hover:animate-ping opacity-75"></span>
-            
-            <!-- Icon -->
-            <span class="relative flex items-center">
-                <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span class="relative">Buat Jadwal Pertama</span>
-            </span>
-        </button>
+                        <!-- Enhanced button -->
+                        <button onclick="openModal()" 
+                                class="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 group relative">
+                            <!-- Ping effect -->
+                            <span class="absolute inset-0 rounded-full bg-white/20 group-hover:animate-ping opacity-75"></span>
+                            
+                            <!-- Icon -->
+                            <span class="relative flex items-center">
+                                <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span class="relative">Buat Jadwal Pertama</span>
+                            </span>
+                        </button>
 
-        <!-- Decorative dots -->
-        <div class="absolute bottom-4 right-4 flex space-x-1">
-            <div class="w-2 h-2 rounded-full bg-blue-500/30"></div>
-            <div class="w-2 h-2 rounded-full bg-purple-500/30"></div>
-            <div class="w-2 h-2 rounded-full bg-pink-500/30"></div>
-        </div>
-    </div>
-</div>
+                        <!-- Decorative dots -->
+                        <div class="absolute bottom-4 right-4 flex space-x-1">
+                            <div class="w-2 h-2 rounded-full bg-blue-500/30"></div>
+                            <div class="w-2 h-2 rounded-full bg-purple-500/30"></div>
+                            <div class="w-2 h-2 rounded-full bg-pink-500/30"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         @endif
     </div>
 </section>
 
   <!-- Modal for Adding Schedule -->
-<div id="jadwalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal-backdrop">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl transform modal-content">
-        <!-- Modal Header -->
-        <div class="flex items-center justify-between mb-6">
-            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    <div id="jadwalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal-backdrop">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl transform modal-content">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between mb-6">
+                <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Tambah Jadwal</span>
+                </h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+        <!-- Form -->
+        <form id="jadwalForm" onsubmit="handleSubmit(event)" class="space-y-6">
+        @csrf
+        <input type="hidden" id="jadwal_id">
+
+        <!-- Tanggal & Waktu Group -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Tanggal -->
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <span>Tambah Jadwal</span>
-            </h2>
-            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                Tanggal
+            </label>
+            <input type="date" id="tanggal" name="tanggal" required
+                    class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- Waktu -->
+            <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
+                Waktu
+            </label>
+            <input type="time" id="waktu" name="waktu" required
+                    class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            </div>
+        </div>
+
+        <!-- Keterangan -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Keterangan
+            </label>
+            <textarea id="keterangan" name="keterangan" rows="3" required
+                    class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
+        </div>
+
+        <!-- Pengulangan -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Pengulangan
+            </label>
+            <select id="recurrence_type" name="recurrence_type" onchange="toggleDays()"
+                    class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            <option value="once">Sekali</option>
+            <option value="daily">Setiap Hari</option>
+            <option value="custom">Custom</option>
+            </select>
+        </div>
+
+        <!-- Custom days -->
+        <div id="daysContainer" class="hidden space-y-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                Pilih Hari
+            </label>
+            <div class="grid grid-cols-3 gap-3">
+                @foreach(['mon'=>'Senin','tue'=>'Selasa','wed'=>'Rabu','thu'=>'Kamis','fri'=>'Jumat','sat'=>'Sabtu','sun'=>'Minggu'] as $key=>$lbl)
+                <label class="day-label relative flex items-center justify-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-all">
+                    <input type="checkbox" name="recurrence_days[]" value="{{ $key }}"
+                        class="day-checkbox absolute opacity-0 peer"
+                        onchange="toggleDayHighlight(this)">
+                    <span class="text-sm text-gray-700 dark:text-gray-300 peer-checked:text-blue-600 dark:peer-checked:text-blue-400">{{ $lbl }}</span>
+                    <div class="absolute inset-0 bg-blue-50 dark:bg-blue-900/20 rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                </label>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Remind before -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+            Ingatkan Sebelum
+            </label>
+            <div class="flex items-center">
+            <input type="number" id="remind_before" name="remind_before" min="0" required
+                    class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
+            <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">menit</span>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-3 pt-6">
+            <button type="button" onclick="closeModal()"
+                    class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors">
+            Batal
+            </button>
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Simpan
             </button>
         </div>
-
-    <!-- Form -->
-    <form id="jadwalForm" onsubmit="handleSubmit(event)" class="space-y-6">
-      @csrf
-      <input type="hidden" id="jadwal_id">
-
-      <!-- Tanggal & Waktu Group -->
-      <div class="grid grid-cols-2 gap-4">
-        <!-- Tanggal -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            Tanggal
-          </label>
-          <input type="date" id="tanggal" name="tanggal" required
-                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
-        </div>
-
-        <!-- Waktu -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Waktu
-          </label>
-          <input type="time" id="waktu" name="waktu" required
-                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
-        </div>
-      </div>
-
-      <!-- Keterangan -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-          </svg>
-          Keterangan
-        </label>
-        <textarea id="keterangan" name="keterangan" rows="3" required
-                  class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
-      </div>
-
-      <!-- Pengulangan -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-          </svg>
-          Pengulangan
-        </label>
-        <select id="recurrence_type" name="recurrence_type" onchange="toggleDays()"
-                class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
-          <option value="once">Sekali</option>
-          <option value="daily">Setiap Hari</option>
-          <option value="custom">Custom</option>
-        </select>
-      </div>
-
-      <!-- Custom days -->
-    <div id="daysContainer" class="hidden space-y-3">
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-            Pilih Hari
-        </label>
-        <div class="grid grid-cols-3 gap-3">
-            @foreach(['mon'=>'Senin','tue'=>'Selasa','wed'=>'Rabu','thu'=>'Kamis','fri'=>'Jumat','sat'=>'Sabtu','sun'=>'Minggu'] as $key=>$lbl)
-            <label class="day-label relative flex items-center justify-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-all">
-                <input type="checkbox" name="recurrence_days[]" value="{{ $key }}"
-                    class="day-checkbox absolute opacity-0 peer"
-                    onchange="toggleDayHighlight(this)">
-                <span class="text-sm text-gray-700 dark:text-gray-300 peer-checked:text-blue-600 dark:peer-checked:text-blue-400">{{ $lbl }}</span>
-                <div class="absolute inset-0 bg-blue-50 dark:bg-blue-900/20 rounded-lg opacity-0 peer-checked:opacity-100 transition-opacity"></div>
-            </label>
-            @endforeach
-        </div>
+        </form>
+    </div>
     </div>
 
-      <!-- Remind before -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-          </svg>
-          Ingatkan Sebelum
-        </label>
-        <div class="flex items-center">
-          <input type="number" id="remind_before" name="remind_before" min="0" required
-                 class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
-          <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">menit</span>
-        </div>
-      </div>
+    <!-- Blog Preview Section -->
+    <section id="article" class="snap-start min-h-screen relative flex items-center justify-center bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-16 overflow-hidden">
+        <!-- Decorative Background Elements -->
+        <div class="absolute inset-0 pointer-events-none">
+            <!-- Animated Circles -->
+            <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400/30 dark:bg-blue-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+            <div class="absolute top-40 right-10 w-64 h-64 bg-purple-400/30 dark:bg-purple-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-20 left-1/3 w-64 h-64 bg-pink-400/30 dark:bg-pink-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
 
-      <!-- Buttons -->
-      <div class="flex justify-end space-x-3 pt-6">
-        <button type="button" onclick="closeModal()"
-                class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors">
-          Batal
-        </button>
-        <button type="submit"
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-          Simpan
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]"></div>
 
-  <!-- Blog Preview Section -->
-    <div class="max-w-screen-xl mx-auto px-4 fade-in fade-delay-3">
-        <h2 class="text-3xl font-bold text-gray-800 dark:text-white text-center mb-4">Artikel Terbaru</h2>
-        <p class="text-center text-gray-600 dark:text-gray-300 mb-10">
-            Cari tahu berbagai informasi, tips, dan trik menarik seputar budidaya ikan.
-        </p>
+            <!-- Radial Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-radial from-transparent via-white/50 to-white dark:via-gray-900/50 dark:to-gray-900 opacity-60"></div>
 
-        @if($latestArticles->count() > 0)
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 blog-grid">
-            @foreach($latestArticles as $article)
-            <a href="{{ route('articles.show', $article) }}" 
-               class="group bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:scale-105">
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                            {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
-                               ($article->tag === 'perawatan' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 
-                               'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200') }}">
-                            {{ ucfirst($article->tag) }}
-                        </span>
-                    </div>
-                    
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                        {{ Str::limit($article->judul, 50) }}
-                    </h3>
-                    
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
-                        {{ Str::limit(strip_tags($article->isi), 100) }}
-                    </p>
-                    
-                    <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                        <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                            {{ $article->author->name }}
-                        </span>
-                        <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            {{ $article->created_at->diffForHumans() }}
-                        </span>
-                    </div>
-                </div>
-            </a>
-            @endforeach
-        </div>
-
-        <div class="text-center mt-8">
-            <a href="{{ route('articles.index') }}" 
-               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
-                Lihat Semua Artikel
-                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            <!-- Floating Icons -->
+            <div class="absolute top-1/4 right-10 animate-float-slow">
+                <svg class="w-12 h-12 text-blue-200 dark:text-blue-800" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                 </svg>
-            </a>
+            </div>
+            <div class="absolute bottom-1/4 left-10 animate-float-slow animation-delay-2000">
+                <svg class="w-12 h-12 text-purple-200 dark:text-purple-800" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+            </div>
         </div>
-        @else
-        <div class="text-center">
-            <p class="text-gray-500 dark:text-gray-400 mb-4">Belum ada artikel yang tersedia.</p>
+
+        <div class="max-w-screen-xl mx-auto px-4 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-16 fade-up">
+                <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-4 transform hover:scale-105 transition-all duration-300">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                    </svg>
+                    Latest Updates
+                </span>
+
+                <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-4">
+                    Artikel Terbaru
+                </h2>
+
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <span class="w-8 h-1 bg-blue-600 rounded-full"></span>
+                    <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
+                    <span class="w-3 h-1 bg-blue-400 rounded-full"></span>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+                    Temukan informasi menarik seputar budidaya ikan yang kekinian dan up-to-date
+                </p>
+            </div>
+
+            @if($latestArticles->count() > 0)
+            <!-- Articles Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                @foreach($latestArticles as $article)
+                <article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden fade-up" style="animation-delay: {{ $loop->iteration * 100 }}ms">
+                    <div class="p-6 relative">
+                        <!-- Article Tag -->
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                                {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' : 
+                                ($article->tag === 'perawatan' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 
+                                'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200') }}">
+                                {{ ucfirst($article->tag) }}
+                            </span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ $article->created_at->diffForHumans() }}
+                            </span>
+                        </div>
+
+                        <!-- Article Content -->
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {{ $article->judul }}
+                        </h3>
+                        
+                        <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                            {{ Str::limit(strip_tags($article->isi), 120) }}
+                        </p>
+
+                        <!-- Article Footer -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                                    {{ substr($article->author->name, 0, 1) }}
+                                </div>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ $article->author->name }}
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                    </svg>
+                                    {{ $article->comments->count() }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Hover Effect Overlay -->
+                        <a href="{{ route('articles.show', $article) }}" class="absolute inset-0 z-10">
+                            <span class="sr-only">Read more about {{ $article->judul }}</span>
+                        </a>
+                    </div>
+                </article>
+                @endforeach
+            </div>
+
+            <!-- CTA Button -->
+            <div class="text-center fade-up">
+                <a href="{{ route('articles.index') }}" 
+                class="group inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+                    <span>Lihat Semua Artikel</span>
+                    <svg class="ml-2 w-5 h-5 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+            @else
+            <!-- Empty State -->
+            <div class="text-center bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-lg max-w-lg mx-auto border border-gray-100 dark:border-gray-700 fade-up">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
+                    <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
+                    <svg class="w-12 h-12 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Coming Soon!</h3>
+                <p class="text-gray-600 dark:text-gray-400">Stay tuned! Artikel-artikel menarik akan segera hadir.</p>
+            </div>
+            @endif
         </div>
-        @endif
-    </div>
+    </section>
 
 @endsection
 

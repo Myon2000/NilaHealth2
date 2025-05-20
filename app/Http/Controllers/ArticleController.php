@@ -5,15 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with('author')
-            ->latest()
-            ->paginate(10);
-            
+        $query = Article::with(['author', 'comments'])
+                        ->latest();
+
+        // Apply tag filter first
+        if ($request->has('tag') && $request->tag !== 'semua') {
+            $query->where('tag', $request->tag);
+        }
+
+        // Then apply search within the tagged results
+        if ($request->has('search') && !empty(trim($request->search))) {
+            $search = trim($request->search);
+            $query->where(function($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%")
+                ->orWhere('isi', 'like', "%{$search}%");
+            });
+        }
+
+        $articles = $query->paginate(9);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('frontend.pages.article._article_grid', compact('articles'))->render(),
+                'pagination' => $articles->links()->toHtml()
+            ]);
+        }
+
         return view('frontend.pages.article.index', compact('articles'));
     }
 
@@ -30,7 +53,7 @@ class ArticleController extends Controller
         ]);
 
         $comment = new Comment([
-            'users_id' => auth()->id(),
+            'users_id' => Auth::id(),
             'isi' => $validated['isi']
         ]);
 

@@ -9,7 +9,6 @@
         );
     }
 
-    /* Smoother blob animations */
     .animate-blob {
         animation: blob 10s infinite cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -33,14 +32,12 @@
         }
     }
 
-    /* Enhanced grid pattern */
     .bg-grid-pattern {
         background-image: linear-gradient(to right, currentColor 1px, transparent 1px),
                          linear-gradient(to bottom, currentColor 1px, transparent 1px);
         background-size: 30px 30px;
     }
     
-    /* Modal Animations */
     .modal-backdrop {
         transition: opacity 0.3s ease-in-out;
         opacity: 0;
@@ -61,7 +58,6 @@
         transform: scale(1) translateY(0);
     }
 
-    /* Custom Days Container Animation */
     #daysContainer {
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         max-height: 0;
@@ -74,7 +70,6 @@
         opacity: 1;
     }
 
-    /* Day checkbox animations */
     .day-label {
         transition: all 0.2s ease-in-out;
         transform-origin: center;
@@ -94,7 +89,6 @@
         100% { transform: scale(1); }
     }
 
-    /* Checkbox background animation */
     .day-label .checkbox-bg {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         transform-origin: center;
@@ -110,9 +104,7 @@
         100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Mobile-first responsive styles */
     @media (max-width: 640px) {
-        /* Hero Section */
         .hero-title {
             font-size: 2.5rem !important;
             line-height: 1.2 !important;
@@ -123,14 +115,12 @@
             padding: 0 1rem;
         }
         
-        /* Stats Section */
         .stats-container {
             grid-template-columns: 1fr !important;
             gap: 1rem !important;
             padding: 0 1rem;
         }
         
-        /* Schedule Section */
         .schedule-container {
             padding: 1rem !important;
         }
@@ -144,7 +134,6 @@
             padding: 1rem !important;
         }
         
-        /* Blog Section */
         .blog-container {
             padding: 1rem !important;
         }
@@ -154,7 +143,6 @@
             gap: 1rem !important;
         }
         
-        /* Modal */
         .modal-content {
             margin: 1rem !important;
             padding: 1rem !important;
@@ -164,19 +152,16 @@
             font-size: 1.5rem !important;
         }
         
-        /* Form Elements */
         input, select, textarea {
-            font-size: 16px !important; /* Prevents zoom on iOS */
+            font-size: 16px !important;
         }
         
-        /* Buttons */
         .cta-button {
             width: 100% !important;
             justify-content: center !important;
         }
     }
 
-    /* Tablet Responsive Styles */
     @media (min-width: 641px) and (max-width: 1024px) {
         .hero-title {
             font-size: 3rem !important;
@@ -191,12 +176,11 @@
         }
     }
 
-    /* Better Touch Targets for Mobile */
     @media (max-width: 640px) {
         button, 
         .button,
         a {
-            min-height: 44px !important; /* Minimum touch target size */
+            min-height: 44px !important;
             padding: 0.75rem 1rem !important;
         }
         
@@ -212,7 +196,6 @@
         }
     }
 
-    /* Improved Mobile Navigation */
     @media (max-width: 640px) {
         .nav-menu {
             position: fixed !important;
@@ -229,7 +212,6 @@
         }
     }
 
-    /* Loading States for Mobile */
     @media (max-width: 640px) {
         .loading-skeleton {
             opacity: 0.7 !important;
@@ -247,7 +229,7 @@
     }
 
     .dark .waves .parallax > use:nth-child(1) {
-        fill: rgba(17, 24, 39, 0.7); /* dark:bg-gray-900 dengan opacity */
+        fill: rgba(17, 24, 39, 0.7); 
     }
     .dark .waves .parallax > use:nth-child(2) {
         fill: rgba(17, 24, 39, 0.8);
@@ -256,10 +238,9 @@
         fill: rgba(17, 24, 39, 0.9);
     }
     .dark .waves .parallax > use:nth-child(4) {
-        fill: rgb(17, 24, 39); /* dark:bg-gray-900 solid */
+        fill: rgb(17, 24, 39); 
     }
 
-    /* Update wave transition untuk dark mode */
     .dark .wave-transition {
         background: linear-gradient(
             to bottom,
@@ -268,7 +249,6 @@
         );
     }
 
-    /* Wave Animation */
     .waves {
         position: relative;
         width: 100%;
@@ -307,7 +287,7 @@
     }
 
     .waves .parallax > use:nth-child(1) {
-        fill: rgba(249, 250, 251, 0.7); /* lighter color */
+        fill: rgba(249, 250, 251, 0.7);
     }
     .waves .parallax > use:nth-child(2) {
         fill: rgba(249, 250, 251, 0.8);
@@ -316,7 +296,7 @@
         fill: rgba(249, 250, 251, 0.9);
     }
     .waves .parallax > use:nth-child(4) {
-        fill: #f9fafb; /* match with schedule section background */
+        fill: #f9fafb;
     }
 
     @keyframes moveWave {
@@ -328,7 +308,6 @@
         }
     }
 
-    /* Wave Container */
     .wave-container {
         position: absolute;
         bottom: 0;
@@ -339,7 +318,6 @@
         transform: rotate(180deg);
     }
 
-    /* Enhanced Wave Effects */
     .wave-animation {
         position: relative;
         width: 100%;
@@ -387,8 +365,8 @@
     .dark .schedule-gradient {
         background: linear-gradient(
             to bottom,
-            rgb(17, 24, 39) 0%,    /* dark:bg-gray-900 */
-            rgb(31, 41, 55) 100%   /* dark:bg-gray-800 */
+            rgb(17, 24, 39) 0%,
+            rgb(31, 41, 55) 100%
         );
     }
     .schedule-gradient {
@@ -408,7 +386,6 @@
         }
     }
 
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
         .waves {
             height: 40px;
@@ -431,7 +408,6 @@
         }
     }
 
-    /* Wave Glow Effect */
     .wave-glow {
         position: absolute;
         bottom: 0;
@@ -446,7 +422,6 @@
         filter: blur(10px);
     }
 
-    /* Add these to your existing animations section */
     @keyframes waveFlow {
         0% {
             background-position-x: 0;
@@ -477,7 +452,6 @@
         opacity: 0.3;
     }
 
-    /* Enhance existing wave classes */
     .waves svg {
         width: 100%;
         height: 100%;
@@ -496,7 +470,6 @@
         }
     }
 
-    /* Add shimmer effect */
     .wave-shimmer {
         position: absolute;
         top: 0;
@@ -524,11 +497,8 @@
 @endsection
 
 @section('content')
-  <!-- Hero Section -->
   <section class="snap-start min-h-screen bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-900 dark:to-gray-800 flex items-center relative transition-colors duration-300 overflow-hidden">
-    <!-- Animated Background Elements -->
       <div class="absolute inset-0">
-          <!-- Animated Wave -->
           <div class="absolute bottom-0 w-full overflow-hidden">
               <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                   viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -544,25 +514,20 @@
               </svg>
           </div>
 
-          <!-- Floating Elements -->
           <div class="absolute top-20 left-16 w-40 h-40 bg-white/5 rounded-full blur-xl animate-pulse"></div>
           <div class="absolute bottom-16 right-20 w-52 h-52 bg-white/5 rounded-full blur-xl animate-pulse delay-1000"></div>
           
-          <!-- Animated Particles -->
           <div class="absolute inset-0">
               <div class="particles-container"></div>
           </div>
       </div>
       
-      <!-- Main Content -->
       <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <!-- Hero Badge -->
           <div class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm mb-8 hero-fade">
               <span class="animate-pulse w-2 h-2 rounded-full bg-green-400 mr-2"></span>
               <span class="text-white/90 text-sm font-medium">AI-Powered Fish Health Management</span>
           </div>
 
-          <!-- Hero Title -->
           <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 hero-fade delay-1 hero-title">
               <span class="inline-block">Solusi Cerdas</span>
               <span class="inline-block bg-gradient-to-r from-blue-200 to-blue-100 text-transparent bg-clip-text">
@@ -570,13 +535,11 @@
               </span>
           </h1>
 
-          <!-- Hero Description -->
           <p class="text-white/80 text-lg sm:text-xl max-w-3xl mx-auto mb-10 hero-fade delay-2">
               NilaHealth adalah platform cerdas yang membantu petani ikan dalam mendeteksi penyakit, 
               menganalisis kondisi ikan nila, dan mengelola kesehatan kolam secara efisien.
           </p>
 
-          <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 hero-fade delay-3">
               <a href="{{ route('diagnosis.form') }}" 
                 class="group relative inline-flex items-center px-8 py-3 bg-white text-blue-700 rounded-full overflow-hidden transform hover:scale-105 transition-all duration-300">
@@ -590,12 +553,9 @@
               </a>
           </div>
 
-          <!-- Stats Section -->
           <div class="grid md:grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto hero-fade delay-4 stats-container">
-              <!-- Empty column for centering -->
               <div class="hidden md:block"></div>
               
-              <!-- Stats items -->
               <div class="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
                   <div class="text-3xl font-bold text-white mb-1">95%</div>
                   <div class="text-white/70">Akurasi Diagnosis</div>
@@ -606,25 +566,20 @@
                   <div class="text-white/70">Monitoring</div>
               </div>
               
-              <!-- Empty column for centering -->
               <div class="hidden md:block"></div>
           </div>
   </section>
 
 <div class="wave-transition"></div>
 
-<!-- Schedule Section -->
 <section id="schedule" class="snap-start min-h-screen relative flex items-center justify-center schedule-gradient transition-colors duration-300 overflow-hidden -mt-1 py-8 sm:py-16">
     <div class="absolute inset-0 pointer-events-none">
-        <!-- Animated Circles -->
         <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div class="absolute top-40 right-10 w-64 h-64 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
         <div class="absolute bottom-20 left-1/3 w-64 h-64 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
 
-        <!-- Grid Pattern -->
         <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
-        <!-- Floating Icons -->
         <div class="absolute top-1/4 left-10 animate-float-slow">
             <svg class="w-12 h-12 text-blue-200 dark:text-blue-800" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -638,13 +593,11 @@
     </div>
 
     <div class="max-w-screen-xl mx-auto px-4 relative z-10">
-        <!-- Section Header with enhanced styling -->
         <div class="text-center mb-8 sm:mb-12 fade-up">
             <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-4 transform hover:scale-105 transition-all duration-300">
                 Pengingat Penanganan
             </span>
           <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mt-2 mb-4 relative inline-block">
-              <!-- Pindahkan badge ke sini -->
                 Jadwal Penanganan
               <div class="absolute -bottom-2 left-0 right-0 h-1 bg-blue-600 transform scale-x-0 transition-transform duration-500 group-hover:scale-x-100"></div>
           </h2>
@@ -657,7 +610,6 @@
                 Kelola jadwal penanganan ikan nila Anda dengan mudah dan terorganisir
             </p>
             
-            <!-- Enhanced Add Schedule Button -->
             <button onclick="openModal()" 
                     class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg sm:rounded-full hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-blue-500/50">
                 <span class="relative flex items-center">
@@ -669,7 +621,6 @@
             </button>
         </div>
 
-        <!-- Add these styles to your CSS -->
         <style>
             @keyframes blob {
                 0% { transform: translate(0px, 0px) scale(1); }
@@ -707,12 +658,9 @@
         </style>
         
         @if($jadwals && $jadwals->count() > 0)
-        <!-- Schedule Cards Container -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             @foreach($jadwals as $jadwal)
-            <!-- Updated card styling for better mobile view -->
             <div class="bg-white dark:bg-gray-800/95 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl p-4 sm:p-6 transform transition-all duration-300 border border-gray-100/10 dark:border-gray-700/50">
-                <!-- Date and Time Header -->
                 <div class="flex items-center justify-between mb-4">
                     <div class="bg-blue-100 dark:bg-blue-900/50 rounded-full px-3 py-1.5">
                         <span class="text-blue-800 dark:text-blue-200 text-sm font-medium">
@@ -729,12 +677,10 @@
                     </div>
                 </div>
 
-                <!-- Description with better spacing -->
                 <h3 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-3">
                     {{ $jadwal->keterangan }}
                 </h3>
 
-                <!-- Updated details layout -->
                 <div class="space-y-2.5">
                     <div class="flex items-center text-sm">
                         <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -760,7 +706,6 @@
                     </div>
                 </div>
 
-                <!-- Action buttons with better touch targets -->
                 <div class="flex items-center justify-end mt-4 space-x-3">
                     <button onclick="editJadwal({{ $jadwal->id }})" 
                             class="p-2 text-blue-600 hover:text-blue-800 dark:hover:text-blue-400">
@@ -779,14 +724,11 @@
             @endforeach
         </div>
         @else
-            <!-- Empty State with enhanced styling -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 max-w-lg mx-auto border border-gray-100 dark:border-gray-700 relative overflow-hidden fade-up">
-                    <!-- Decorative elements -->
                     <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full transform translate-x-16 -translate-y-16"></div>
                     <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/5 rounded-tr-full transform -translate-x-16 translate-y-16"></div>
                     
                     <div class="text-center relative z-10">
-                        <!-- Enhanced icon -->
                         <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
                             <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
                             <svg class="w-12 h-12 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -794,7 +736,6 @@
                             </svg>
                         </div>
 
-                        <!-- Enhanced text content -->
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                             Belum Ada Jadwal
                         </h3>
@@ -803,13 +744,10 @@
                             Dapatkan pengingat tepat waktu untuk perawatan yang optimal.
                         </p>
 
-                        <!-- Enhanced button -->
                         <button onclick="openModal()" 
                                 class="inline-flex items-center px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 group relative">
-                            <!-- Ping effect -->
                             <span class="absolute inset-0 rounded-full bg-white/20 group-hover:animate-ping opacity-75"></span>
                             
-                            <!-- Icon -->
                             <span class="relative flex items-center">
                                 <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -818,7 +756,6 @@
                             </span>
                         </button>
 
-                        <!-- Decorative dots -->
                         <div class="absolute bottom-4 right-4 flex space-x-1">
                             <div class="w-2 h-2 rounded-full bg-blue-500/30"></div>
                             <div class="w-2 h-2 rounded-full bg-purple-500/30"></div>
@@ -831,10 +768,8 @@
     </div>
 </section>
 
-  <!-- Modal for Adding Schedule -->
     <div id="jadwalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal-backdrop">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl transform modal-content">
-            <!-- Modal Header -->
             <div class="flex items-center justify-between mb-6">
                 <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
                     <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -849,14 +784,11 @@
                 </button>
             </div>
 
-        <!-- Form -->
         <form id="jadwalForm" onsubmit="handleSubmit(event)" class="space-y-6">
         @csrf
         <input type="hidden" id="jadwal_id">
 
-        <!-- Tanggal & Waktu Group -->
         <div class="grid grid-cols-2 gap-4">
-            <!-- Tanggal -->
             <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -868,7 +800,6 @@
                     class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
             </div>
 
-            <!-- Waktu -->
             <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -881,7 +812,6 @@
             </div>
         </div>
 
-        <!-- Keterangan -->
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -893,7 +823,6 @@
                     class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
         </div>
 
-        <!-- Pengulangan -->
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -909,7 +838,6 @@
             </select>
         </div>
 
-        <!-- Custom days -->
         <div id="daysContainer" class="hidden space-y-3">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -930,7 +858,6 @@
             </div>
         </div>
 
-        <!-- Remind before -->
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -945,7 +872,6 @@
             </div>
         </div>
 
-        <!-- Buttons -->
         <div class="flex justify-end space-x-3 pt-6">
             <button type="button" onclick="closeModal()"
                     class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors">
@@ -963,22 +889,16 @@
     </div>
     </div>
 
-    <!-- Blog Preview Section -->
     <section id="article" class="snap-start min-h-screen relative flex items-center justify-center bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-16 overflow-hidden">
-        <!-- Decorative Background Elements -->
         <div class="absolute inset-0 pointer-events-none">
-            <!-- Animated Circles -->
             <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400/30 dark:bg-blue-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
             <div class="absolute top-40 right-10 w-64 h-64 bg-purple-400/30 dark:bg-purple-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
             <div class="absolute -bottom-20 left-1/3 w-64 h-64 bg-pink-400/30 dark:bg-pink-600/20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
 
-            <!-- Grid Pattern -->
             <div class="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]"></div>
 
-            <!-- Radial Gradient Overlay -->
             <div class="absolute inset-0 bg-gradient-radial from-transparent via-white/50 to-white dark:via-gray-900/50 dark:to-gray-900 opacity-60"></div>
 
-            <!-- Floating Icons -->
             <div class="absolute top-1/4 right-10 animate-float-slow">
                 <svg class="w-12 h-12 text-blue-200 dark:text-blue-800" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
@@ -992,7 +912,6 @@
         </div>
 
         <div class="max-w-screen-xl mx-auto px-4 relative z-10">
-            <!-- Section Header -->
             <div class="text-center mb-16 fade-up">
                 <span class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-sm font-semibold mb-4 transform hover:scale-105 transition-all duration-300">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1017,12 +936,10 @@
             </div>
 
             @if($latestArticles->count() > 0)
-            <!-- Articles Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 @foreach($latestArticles as $article)
                 <article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden fade-up" style="animation-delay: {{ $loop->iteration * 100 }}ms">
                     <div class="p-6 relative">
-                        <!-- Article Tag -->
                         <div class="flex items-center justify-between mb-6">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
                                 {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' : 
@@ -1035,7 +952,6 @@
                             </span>
                         </div>
 
-                        <!-- Article Content -->
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {{ $article->judul }}
                         </h3>
@@ -1044,7 +960,6 @@
                             {{ Str::limit(strip_tags($article->isi), 120) }}
                         </p>
 
-                        <!-- Article Footer -->
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                             <div class="flex items-center space-x-3">
                                 <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
@@ -1064,7 +979,6 @@
                             </div>
                         </div>
 
-                        <!-- Hover Effect Overlay -->
                         <a href="{{ route('articles.show', $article) }}" class="absolute inset-0 z-10">
                             <span class="sr-only">Read more about {{ $article->judul }}</span>
                         </a>
@@ -1073,7 +987,6 @@
                 @endforeach
             </div>
 
-            <!-- CTA Button -->
             <div class="text-center fade-up">
                 <a href="{{ route('articles.index') }}" 
                 class="group inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
@@ -1084,7 +997,6 @@
                 </a>
             </div>
             @else
-            <!-- Empty State -->
             <div class="text-center bg-white dark:bg-gray-800 rounded-2xl p-12 shadow-lg max-w-lg mx-auto border border-gray-100 dark:border-gray-700 fade-up">
                 <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 mb-6 relative group">
                     <div class="absolute inset-0 rounded-full bg-blue-500/20 animate-ping group-hover:bg-blue-500/30"></div>
@@ -1110,7 +1022,6 @@
       
       document.body.appendChild(toast);
       
-      // Remove notification after delay
       setTimeout(() => {
           toast.classList.replace('notification-enter', 'notification-leave');
           setTimeout(() => toast.remove(), 500);
@@ -1146,7 +1057,6 @@
             requestAnimationFrame(() => {
                 container.classList.add('show');
                 
-                // Animate each day label with delay
                 container.querySelectorAll('.day-label').forEach((label, index) => {
                     setTimeout(() => {
                         label.style.opacity = '0';
@@ -1171,7 +1081,6 @@
         const backdrop = modal;
         const content = modal.querySelector('.modal-content');
         
-        // Reset form if not editing
         if (!isEdit) {
             document.getElementById('jadwalForm').reset();
             document.getElementById('jadwal_id').value = '';
@@ -1179,7 +1088,6 @@
             document.getElementById('modalTitle').textContent = 'Tambah Jadwal';
         }
         
-        // Show modal with animation
         modal.style.display = 'flex';
         requestAnimationFrame(() => {
             backdrop.classList.add('show');
@@ -1192,11 +1100,9 @@
         const backdrop = modal;
         const content = modal.querySelector('.modal-content');
         
-        // Hide with animation
         backdrop.classList.remove('show');
         content.classList.remove('show');
         
-        // Wait for animation to finish before hiding
         setTimeout(() => {
             modal.style.display = 'none';
             document.getElementById('jadwalForm').reset();
@@ -1250,12 +1156,8 @@
     setTimeout(()=>location.reload(),800);
   }
 
-  // ====================================
-  // EDIT: ambil data lama, prefill & modalTitle = "Edit Jadwal"
-  // ====================================
     async function editJadwal(id) {
-        // Open modal first with proper animation
-        openModal(true); // Pass true to indicate this is an edit operation
+        openModal(true); 
         
         const res = await fetch(`/jadwal/${id}`);
         const data = await res.json();
@@ -1264,14 +1166,11 @@
             return showToast(data.message || 'Gagal ambil data');
         }
 
-        // Set modal title
         document.getElementById('modalTitle').textContent = 'Edit Jadwal';
         
-        // Format date
         const tanggal = new Date(data.tanggal);
         const formattedTanggal = tanggal.toISOString().split('T')[0];
         
-        // Fill form with data
         document.getElementById('jadwal_id').value = data.id;
         document.getElementById('tanggal').value = formattedTanggal;
         document.getElementById('waktu').value = data.waktu;
@@ -1279,14 +1178,12 @@
         document.getElementById('recurrence_type').value = data.recurrence_type;
         document.getElementById('remind_before').value = data.remind_before;
         
-        // Handle custom days if needed
         if(data.recurrence_type === 'custom') {
             document.getElementById('daysContainer').style.display = 'block';
             requestAnimationFrame(() => {
                 document.getElementById('daysContainer').classList.add('show');
             });
             
-            // Check appropriate days
             document.querySelectorAll('input[name="recurrence_days[]"]').forEach(cb => {
                 cb.checked = data.recurrence_days?.includes(cb.value) || false;
                 if(cb.checked) toggleDayHighlight(cb);
@@ -1309,7 +1206,6 @@
         const label = checkbox.closest('.day-label');
         if (checkbox.checked) {
             label.classList.add('border-blue-500', 'dark:border-blue-500');
-            // Add pop animation
             label.style.transform = 'scale(1.05)';
             setTimeout(() => {
                 label.style.transform = 'scale(1)';

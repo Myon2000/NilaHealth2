@@ -2,7 +2,6 @@
 
 @section('extraCSS')
 <style>
-  /* Base animations */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -31,7 +30,6 @@
   .fade-delay-2 { animation-delay: 0.6s; }
   .fade-delay-3 { animation-delay: 0.9s; }
 
-  /* Enhanced Profile Card */
   .profile-card {
     background: #ffffff;
     border-radius: 1.5rem;
@@ -47,7 +45,6 @@
     border-color: rgba(51, 65, 85, 1);
   }
 
-  /* Information Rows */
   .info-row {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -71,7 +68,6 @@
     background: #1e293b;
   }
 
-  /* Text Styling */
   .info-label {
     color: #475569;
     font-size: 0.925rem;
@@ -93,7 +89,6 @@
     color: #f8fafc;
   }
 
-  /* Enhanced Button */
   .btn-shine {
     background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
@@ -126,7 +121,6 @@
     animation: shine 3s infinite;
   }
 
-  /* Responsive Design */
   @media (max-width: 640px) {
     .profile-card {
       margin: 1rem;
@@ -157,7 +151,6 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-800 via-blue-600 to-blue-400 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 pt-16">
-  <!-- Header Section -->
   <div class="text-center py-12 px-4">
     <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4 slide-in">
       {{ $user->name }}
@@ -167,7 +160,6 @@
     </p>
   </div>
 
-  <!-- Profile Card -->
   <div class="max-w-2xl mx-auto px-4 pb-12">
     <div class="profile-card p-6 sm:p-8 fade-in fade-delay-2">
       <div class="flex items-center mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
@@ -182,7 +174,6 @@
         </h2>
       </div>
 
-      <!-- Information Rows -->
       <div class="space-y-4">
         <div class="info-row">
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
@@ -206,7 +197,6 @@
         </div>
       </div>
 
-      <!-- Action Button -->
       <div class="mt-8 text-center">
         <a href="{{ route('profile.edit') }}" 
            class="btn-shine inline-flex items-center justify-center group">

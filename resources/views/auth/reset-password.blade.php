@@ -1,4 +1,3 @@
-{{-- resources/views/auth/reset-password.blade.php --}}
 @extends('layouts.guest')
 
 @section('extraCSS')
@@ -14,7 +13,6 @@
 @endsection
 
 @section('content')
-<!-- Hero Section -->
 <section class="relative pt-16 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white fade-in fade-delay-1">
   <div class="absolute inset-0 overflow-hidden">
     <img src="/assets/hero/wave.svg"
@@ -27,14 +25,12 @@
   </div>
 </section>
 
-<!-- Reset Password Form -->
 <section class="py-16 bg-white fade-in fade-delay-2">
   <div class="max-w-md mx-auto px-4">
     <div class="bg-white p-8 rounded-2xl shadow-lg">
       <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
         @csrf
 
-        {{-- Token dari controller --}}
         <input type="hidden" name="token" value="{{ $token }}">
 
         <div>

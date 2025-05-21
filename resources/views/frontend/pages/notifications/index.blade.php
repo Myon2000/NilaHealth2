@@ -49,10 +49,8 @@ async function markAsRead(id) {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Gagal menandai notifikasi');
         window.notify.success(data.message);
-        // Update UI: remove unread border
         const elem = event.target.closest('div.rounded-lg');
         elem.classList.remove('border-l-4', 'border-blue-500');
-        // Hide button
         event.target.remove();
     } catch (e) {
         console.error(e);
@@ -72,7 +70,6 @@ async function markAllAsRead() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Gagal menandai semua notifikasi');
         window.notify.success(data.message);
-        // Reload to update UI
         setTimeout(() => location.reload(), 500);
     } catch (e) {
         console.error(e);

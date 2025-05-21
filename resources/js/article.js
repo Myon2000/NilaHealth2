@@ -7,12 +7,10 @@ class ArticleFilter {
     }
 
     init() {
-        // Cache DOM elements
         this.tagButtons = document.querySelectorAll('[data-tag]');
         this.searchInput = document.querySelector('#article-search');
         this.articlesContainer = document.querySelector('#articles-grid');
 
-        // Bind events
         this.tagButtons.forEach(btn => {
             btn.addEventListener('click', () => this.handleTagFilter(btn.dataset.tag));
         });
@@ -21,7 +19,6 @@ class ArticleFilter {
             this.handleSearch(e.target.value);
         }, 300));
 
-        // Initial fetch
         this.fetchArticles();
     }
 
@@ -37,12 +34,10 @@ class ArticleFilter {
     }
 
     handleTagFilter(tag) {
-        // Update active state
         this.tagButtons.forEach(btn => {
             btn.classList.toggle('active-tag', btn.dataset.tag === tag);
         });
 
-        // Animate out
         this.articlesContainer.style.opacity = '0';
         this.articlesContainer.style.transform = 'translateY(20px)';
 
@@ -58,11 +53,9 @@ class ArticleFilter {
     }
 
     renderArticles() {
-        // Prepare animation
         this.articlesContainer.style.opacity = '0';
         this.articlesContainer.style.transform = 'translateY(20px)';
 
-        // Generate HTML
         const html = this.articles.map(article => `
             <article class="article-card" data-tag="${article.tag}">
                 <div class="p-6">
@@ -75,7 +68,6 @@ class ArticleFilter {
             </article>
         `).join('');
 
-        // Update DOM and animate in
         this.articlesContainer.innerHTML = html;
         requestAnimationFrame(() => {
             this.articlesContainer.style.opacity = '1';
@@ -93,7 +85,6 @@ class ArticleFilter {
     }
 }
 
-// Debounce utility
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -106,7 +97,6 @@ function debounce(func, wait) {
     };
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new ArticleFilter();
 });

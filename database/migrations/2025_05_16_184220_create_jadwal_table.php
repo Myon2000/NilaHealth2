@@ -15,7 +15,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->enum('recurrence_type', ['once', 'daily', 'custom']);
             $table->json('recurrence_days')->nullable();
-            $table->integer('remind_before'); // in minutes
+            $table->integer('remind_before');
             $table->timestamps();
         });
     }

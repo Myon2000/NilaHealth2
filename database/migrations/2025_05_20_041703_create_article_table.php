@@ -18,7 +18,7 @@ return new class extends Migration
                   ->onDelete('cascade');
             $table->text('isi');
             $table->timestamps();
-            $table->softDeletes(); // Untuk fitur soft delete
+            $table->softDeletes();
         });
     }
 

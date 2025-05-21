@@ -9,14 +9,12 @@
 </head>
 <body class="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-blue-800 text-white min-h-screen">
         <div class="text-center py-6 text-xl font-bold border-b border-blue-700">
             Admin Panel
         </div>
         
         <nav class="p-4 space-y-2">
-            {{-- Dashboard --}}
             <a href="{{ route('admin.dashboard') }}"
                 class="block px-4 py-2 rounded
                 {{ request()->routeIs('admin.dashboard')
@@ -25,7 +23,6 @@
             Dashboard
             </a>
         
-            {{-- Artikel --}}
             <a href="{{ route('admin.articles.index') }}" 
                 class="block px-4 py-2 rounded
                 {{ request()->routeIs('admin.articles.*')
@@ -34,7 +31,6 @@
                 Artikel
             </a>
         
-            {{-- Liat Akun User --}}
             <a href="{{ route('admin.users.index') }}"
                 class="block px-4 py-2 rounded
                 {{ request()->routeIs('admin.users.*')
@@ -43,7 +39,6 @@
                 Lihat Akun User
             </a>
         
-            {{-- Penanganan Penyakit (Diagnoses) --}}
             <a href="{{ route('admin.diagnoses') }}"
                 class="block px-4 py-2 rounded
                 {{ request()->routeIs('admin.diagnoses')
@@ -62,7 +57,6 @@
         </form>
     </aside>      
 
-    <!-- Main Content -->
     <main class="flex-1 p-6">
         <h1 class="text-2xl font-bold mb-4">@yield('title')</h1>
         @yield('content')
@@ -78,12 +72,10 @@
         
         container.appendChild(toast);
         
-        // Trigger animation
         setTimeout(() => {
             toast.classList.remove('translate-y-2', 'opacity-0');
         }, 10);
 
-        // Remove after 3 seconds
         setTimeout(() => {
             toast.classList.add('translate-y-2', 'opacity-0');
             setTimeout(() => toast.remove(), 300);

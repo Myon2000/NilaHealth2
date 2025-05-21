@@ -14,12 +14,10 @@ class ArticleController extends Controller
         $query = Article::with(['author', 'comments'])
                         ->latest();
 
-        // Apply tag filter first
         if ($request->has('tag') && $request->tag !== 'semua') {
             $query->where('tag', $request->tag);
         }
 
-        // Then apply search within the tagged results
         if ($request->has('search') && !empty(trim($request->search))) {
             $search = trim($request->search);
             $query->where(function($q) use ($search) {

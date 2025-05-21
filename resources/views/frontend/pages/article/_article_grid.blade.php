@@ -1,7 +1,6 @@
 @forelse($articles as $article)
 <article class="article-item article-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden" data-tag="{{ $article->tag }}">
     <div class="p-6">
-        <!-- Tag Badge -->
         <div class="flex justify-between items-start mb-4">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
                 {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800' : 
@@ -12,7 +11,6 @@
             <span class="text-sm text-gray-500">{{ $article->created_at->diffForHumans() }}</span>
         </div>
 
-        <!-- Article Content -->
         <a href="{{ route('articles.show', $article) }}" class="block group">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600">
                 {{ $article->judul }}
@@ -22,7 +20,6 @@
             </p>
         </a>
 
-        <!-- Article Footer -->
         <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">

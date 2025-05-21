@@ -30,9 +30,7 @@
 @section('content')
 <div class="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen pt-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Article Header -->
         <div class="mb-8 animate-fade-up">
-            <!-- Tag Badge -->
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-4
                 {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' : 
                    ($article->tag === 'perawatan' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 
@@ -44,7 +42,6 @@
                 {{ $article->judul }}
             </h1>
             
-            <!-- Author Info -->
             <div class="flex items-center space-x-4 mb-8">
                 <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
                     {{ substr($article->author->name, 0, 1) }}
@@ -60,14 +57,12 @@
             </div>
         </div>
 
-        <!-- Article Content -->
         <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-12 animate-fade-up delay-100">
             <div class="prose dark:prose-invert max-w-none article-content">
                 {!! $article->isi !!}
             </div>
         </article>
 
-        <!-- Comment Section -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 animate-fade-up delay-200">
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

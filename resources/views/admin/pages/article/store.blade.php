@@ -90,7 +90,6 @@
     let editor;
     let formChanged = false;
 
-    // Initialize CKEditor
     ClassicEditor
         .create(document.querySelector('#editor'), {
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo']
@@ -98,7 +97,6 @@
         .then(newEditor => {
             editor = newEditor;
             
-            // Add change event listener to CKEditor
             editor.model.document.on('change:data', () => {
                 formChanged = true;
             });
@@ -107,7 +105,6 @@
             console.error(error);
         });
 
-    // Toast function
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `fixed bottom-4 right-4 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white px-6 py-3 rounded shadow-lg z-50 transform transition-all duration-300 opacity-0 translate-y-2`;
@@ -115,19 +112,16 @@
         
         document.body.appendChild(toast);
         
-        // Trigger animation
         setTimeout(() => {
             toast.classList.remove('opacity-0', 'translate-y-2');
         }, 10);
         
-        // Remove toast after 3 seconds
         setTimeout(() => {
             toast.classList.add('opacity-0', 'translate-y-2');
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
 
-    // Form validation
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
         const judul = document.getElementById('judul');
@@ -135,22 +129,18 @@
         const tag = document.getElementById('tag');
         let isValid = true;
 
-        // Reset previous errors
         document.querySelectorAll('.error-message').forEach(el => el.remove());
         
-        // Validate title
         if (!judul.value.trim()) {
             showFieldError(judul, 'Mohon isi judul artikel');
             isValid = false;
         }
 
-        // Validate content
         if (!editor.innerHTML.trim()) {
             showFieldError(editor, 'Mohon isi konten artikel');
             isValid = false;
         }
 
-        // Validate tag
         if (!tag.value) {
             showFieldError(tag, 'Mohon pilih tag artikel');
             isValid = false;
@@ -158,7 +148,6 @@
 
         if (!isValid) return;
 
-        // Show loading state
         const submitBtn = document.getElementById('submitBtn');
         const loadingIcon = document.getElementById('loadingIcon');
         const submitText = document.getElementById('submitText');
@@ -167,7 +156,6 @@
         loadingIcon.classList.remove('hidden');
         submitText.textContent = 'Menyimpan...';
 
-        // Submit form
         this.submit();
     });
 

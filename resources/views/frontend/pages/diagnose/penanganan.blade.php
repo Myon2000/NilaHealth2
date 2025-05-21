@@ -2,7 +2,6 @@
 
 @section('extraCSS')
 <style>
-    /* Base animations */
     .fade-in {
         opacity: 0;
         transform: translateY(30px);
@@ -14,7 +13,6 @@
         transform: translateY(0);
     }
 
-    /* Enhanced Card Styling */
     .recommendation-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(12px);
@@ -47,7 +45,6 @@
             0 0 0 1px rgba(255, 255, 255, 0.2);
     }
 
-    /* Disease Name Animation */
     .disease-name {
         background: linear-gradient(120deg, #f59e0b, #eab308);
         -webkit-background-clip: text;
@@ -72,7 +69,6 @@
         100% { transform: translateX(100%); }
     }
 
-    /* Steps List Styling */
     .treatment-steps {
         counter-reset: step;
     }
@@ -101,7 +97,6 @@
         font-size: 0.875rem;
     }
 
-    /* Action Button Enhancement */
     .action-button {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
         color: white;
@@ -128,7 +123,6 @@
         left: 100%;
     }
 
-    /* Responsive Design */
     @media (max-width: 640px) {
         .recommendation-card {
             margin: 1rem;
@@ -157,7 +151,6 @@
         }
     }
 
-    /* Dark Mode Enhancements */
     .dark .recommendation-card {
         background: rgba(17, 24, 39, 0.95);
     }
@@ -176,7 +169,6 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 dark:from-gray-900 dark:to-gray-800 pt-16">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto space-y-8 fade-in">
-            <!-- Header -->
             <div class="text-center space-y-4">
                 <span class="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm font-medium">
                     Hasil Diagnosa
@@ -188,7 +180,6 @@
                 </h2>
             </div>
 
-            <!-- Recommendation Card -->
             <div class="recommendation-card p-6 sm:p-8">
                 <div class="flex items-center mb-6">
                     <div class="rounded-full bg-blue-100 dark:bg-blue-900/50 p-3">
@@ -219,7 +210,6 @@
                 </div>
             </div>
 
-            <!-- Action Button -->
             <div class="text-center pt-8">
                 <a href="{{ route('diagnosis.form') }}" class="action-button inline-flex items-center group">
                     <svg class="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

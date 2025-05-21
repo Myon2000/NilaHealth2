@@ -58,10 +58,8 @@ Route::middleware('auth')
 Route::middleware(['auth','verified'])
      ->group(function () {
 
-    // Homepage
     Route::get('/', [HomepageController::class, 'index'])->name('home');
 
-    // Diagnosa
     Route::get('/diagnosis', [DiagnosisController::class, 'form'])->name('diagnosis.form');
     Route::post('/diagnosis', [DiagnosisController::class, 'predict'])->name('diagnosis.predict');
     Route::get('/diagnosis/result', [DiagnosisController::class, 'result'])->name('diagnosis.result');
@@ -71,14 +69,12 @@ Route::middleware(['auth','verified'])
         Diagnosis::distinct()->pluck('hasil_diagnosis')
     ));
 
-    // Uploads
     Route::get('/uploads/original/{filename}', function($filename){
         $path = storage_path("app/nilahealth-model/uploads/original/$filename");
         abort_unless(file_exists($path), 404);
         return response()->file($path);
     });
 
-    // Profile
     Route::controller(ProfileController::class)->group(function(){
         Route::get('/profile','show')->name('profile.show');
         Route::get('/profile/edit','edit')->name('profile.edit');
@@ -86,7 +82,6 @@ Route::middleware(['auth','verified'])
         Route::delete('/profile','destroy')->name('profile.destroy');
     });
 
-    // Jadwal CRUD via AJAX (termasuk show)
     Route::post('/jadwal', [HomepageController::class, 'store'])->name('jadwal.store');
     Route::get('/jadwal/{jadwal}', [HomepageController::class, 'show'])->name('jadwal.show');
     Route::put('/jadwal/{jadwal}', [HomepageController::class, 'update'])->name('jadwal.update');
@@ -98,11 +93,8 @@ Route::middleware(['auth','verified'])
 
     Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-    // Notifications
-//     Route::prefix('notifications')->name('notifications.')->group(function(){
-//         Route::get('/','index');
-//         Route::post('/{id}/mark-as-read','markAsRead')->withoutMiddleware('web');
-//         Route::post('/mark-all-as-read','markAllAsRead')->withoutMiddleware('web');
-//     });
+
+    Route::post('/notifications/jadwal/{jadwal}', [NotificationController::class, 'sendJadwalNotification'])
+         ->name('notifications.jadwal.send');
 
 });

@@ -10,13 +10,13 @@ use App\Models\Notification;
 
 class Jadwal extends Model
 {
-use HasFactory;
+    use HasFactory;
 
     protected $table = 'jadwal';
 
     protected $fillable = [
         'users_id',
-        'tanggal',           // <— tambahkan
+        'tanggal',
         'waktu',
         'keterangan',
         'recurrence_type',
@@ -25,7 +25,7 @@ use HasFactory;
     ];
 
     protected $casts = [
-        'tanggal'         => 'date',          // <— cast jadi date
+        'tanggal'         => 'date',
         'waktu'           => 'datetime:H:i',
         'recurrence_days' => 'array',
     ];

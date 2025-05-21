@@ -83,22 +83,18 @@
         const tag = document.getElementById('tag');
         let isValid = true;
 
-        // Reset previous errors
         document.querySelectorAll('.error-message').forEach(el => el.remove());
         
-        // Validate title
         if (!judul.value.trim()) {
             showFieldError(judul, 'Mohon isi judul artikel');
             isValid = false;
         }
 
-        // Validate content
         if (!editor.innerHTML.trim()) {
             showFieldError(editor, 'Mohon isi konten artikel');
             isValid = false;
         }
 
-        // Validate tag
         if (!tag.value) {
             showFieldError(tag, 'Mohon pilih tag artikel');
             isValid = false;
@@ -106,7 +102,6 @@
 
         if (!isValid) return;
 
-        // Show loading state
         const submitBtn = document.getElementById('submitBtn');
         const loadingIcon = document.getElementById('loadingIcon');
         const submitText = document.getElementById('submitText');
@@ -115,7 +110,6 @@
         loadingIcon.classList.remove('hidden');
         submitText.textContent = 'Menyimpan...';
 
-        // Submit form
         this.submit();
     });
 

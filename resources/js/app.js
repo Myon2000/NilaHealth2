@@ -2,7 +2,6 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 Alpine.start();
 
-// Theme Logic
 document.addEventListener("DOMContentLoaded", applyTheme);
 document.addEventListener("livewire:navigated", applyTheme);
 window.addEventListener("popstate", applyTheme);
@@ -27,7 +26,6 @@ function applyTheme() {
         }
     }
 
-    // Cek saved theme atau system preference
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
         setTheme(savedTheme);
@@ -37,7 +35,6 @@ function applyTheme() {
         setTheme("light");
     }
 
-    // Tambah event listener ke tombol Desktop (sekali saja)
     if (themeToggle && !themeToggle.dataset.listenerAdded) {
         themeToggle.addEventListener("click", () => {
             const isDark = document.documentElement.classList.contains("dark");
@@ -46,7 +43,6 @@ function applyTheme() {
         themeToggle.dataset.listenerAdded = "true";
     }
 
-    // Tambah event listener ke tombol Mobile (sekali saja)
     if (themeToggleMobile && !themeToggleMobile.dataset.listenerAdded) {
         themeToggleMobile.addEventListener("click", () => {
             const isDark = document.documentElement.classList.contains("dark");

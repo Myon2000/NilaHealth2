@@ -9,7 +9,7 @@
         }
 
         #preview-container {
-            max-height: 200px; /* Smaller height for mobile */
+            max-height: 200px;
         }
 
         h2 {
@@ -32,7 +32,6 @@
         }
     }
 
-    /* Custom scrollbar untuk mobile */
     @media (max-width: 640px) {
         ::-webkit-scrollbar {
             width: 4px;
@@ -48,7 +47,6 @@
         }
     }
     
-    /* Animation and Transitions */
     .fade-in {
         opacity: 0;
         transform: translateY(30px);
@@ -59,9 +57,8 @@
         transform: translateY(0);
     }
 
-    /* Updated Preview Container Styles */
     .diagnose-container {
-        max-height: calc(100vh - 8rem); /* Account for header and padding */
+        max-height: calc(100vh - 8rem);
         overflow-y: auto;
         scrollbar-width: thin;
         -ms-overflow-style: none;
@@ -80,7 +77,6 @@
         border-radius: 2px;
     }
 
-    /* File Input Styling */
     .file-input-wrapper {
         position: relative;
         overflow: hidden;
@@ -105,12 +101,11 @@
         border-color: rgba(255, 255, 255, 0.5);
     }
 
-    /* Preview Container */
     #preview-container {
         margin-top: 1.5rem;
         transition: all 0.3s ease;
         position: relative;
-        max-height: 300px; /* Adjust this value as needed */
+        max-height: 300px;
         overflow: hidden;
     }
 
@@ -121,7 +116,7 @@
         border-radius: 0.75rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
-        max-height: 300px; /* Match container max-height */
+        max-height: 300px;
     }
 
     #preview-image:hover {
@@ -139,7 +134,6 @@
         transition: opacity 0.3s, transform 0.3s;
     }
 
-    /* Button Enhancement */
     .diagnose-button {
         background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
         transition: all 0.3s ease;
@@ -150,7 +144,6 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
 
-    /* Dark Mode Enhancements */
     .dark .diagnose-container {
         background: rgba(17, 24, 39, 0.7);
     }
@@ -178,7 +171,6 @@
     <section class="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center transition-colors duration-300 p-4 sm:p-6">
         <div class="w-full max-w-2xl diagnose-container fade-in">
 
-            <!-- Header -->
             <div class="text-center mb-6 sm:mb-8">
                 <span class="inline-block px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
                     AI-Powered Diagnosis
@@ -189,7 +181,6 @@
                 </p>
             </div>
 
-            <!-- Form -->
             <form method="POST" action="{{ route('diagnosis.predict') }}" enctype="multipart/form-data" class="space-y-6 sm:space-y-8">
                 @csrf
                 <div class="file-input-wrapper">
@@ -236,7 +227,6 @@
 
 @section('extraJS')
 <script>
-  // Animasi fade-in saat scroll
   document.addEventListener("DOMContentLoaded", function () {
     const faders = document.querySelectorAll('.fade-in');
     const options = { threshold: 0.1, rootMargin: "0px 0px -100px 0px" };
@@ -264,18 +254,15 @@
             return;
         }
 
-        // Add loading state
         previewContainer.classList.add('preview-loading');
         previewContainer.classList.remove('hidden');
         
         const reader = new FileReader();
         reader.onload = function(e) {
-            // Create new image to check dimensions
             const img = new Image();
             img.onload = function() {
                 previewImage.src = e.target.result;
                 
-                // Add entrance animation classes
                 previewContainer.classList.add('preview-enter');
                 requestAnimationFrame(() => {
                     previewContainer.classList.add('preview-enter-active');
@@ -284,7 +271,6 @@
 
                 fileInputTrigger.classList.add('border-blue-500');
                 
-                // Smooth scroll only if preview is out of view
                 const containerRect = previewContainer.getBoundingClientRect();
                 const isOutOfView = containerRect.bottom > window.innerHeight;
                 
@@ -299,7 +285,6 @@
         };
         reader.readAsDataURL(file);
 
-        // Add error handling
         reader.onerror = function() {
             previewContainer.classList.add('hidden');
             previewContainer.classList.remove('preview-loading');

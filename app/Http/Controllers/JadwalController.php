@@ -51,16 +51,11 @@ class JadwalController extends Controller
                 'remind_before'   => $validated['remind_before'],
             ]);
 
-            Notification::create([
-                'user_id'      => Auth::id(),
-                'jadwal_id'    => $jadwal->id,
-                'message'      => "Jadwal baru: {$jadwal->keterangan} pada {$jadwal->tanggal->format('d M Y')}",
-                'scheduled_at' => now(),
-            ]);
+            app(NotificationController::class)->sendJadwalNotification($jadwal);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Jadwal berhasil ditambahkan!',
+                'message' => 'Jadwal berhasil ditambahkan dan notifikasi dikirim!',
                 'data'    => $jadwal,
             ]);
         } catch (\Throwable $e) {

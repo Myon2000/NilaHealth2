@@ -40,23 +40,18 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // 1) Update nama/email
         $user->fill($request->validated());
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Simpan perubahan profil
         $user->save();
 
-        // Flash hanya jika nama/email berubah
         if ($user->wasChanged(['name', 'email'])) {
             session()->flash('status_profile', 'profile-updated');
         }
 
-        // 2) Jika ada upaya ubah password
         if ($request->filled('current_password') || $request->filled('password')) {
-            // Validasi current + new password
             $request->validate([
                 'current_password' => ['required', 'current_password'],
                 'password'         => ['required', 'string', 'min:8', 'confirmed'],
@@ -64,11 +59,9 @@ class ProfileController extends Controller
                 'current_password.current_password' => 'Password saat ini tidak cocok.',
             ]);
 
-            // Update password
             $user->password = Hash::make($request->input('password'));
             $user->save();
 
-            // Flash hanya jika password benar-benar diganti
             session()->flash('status_password', 'password-updated');
         }
 

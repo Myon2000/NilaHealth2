@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('isi');
             $table->enum('tag', ['penyakit', 'perawatan', 'budidaya']);
             $table->timestamps();
-            $table->softDeletes(); // Untuk fitur soft delete
+            $table->softDeletes();
         });
     }
 

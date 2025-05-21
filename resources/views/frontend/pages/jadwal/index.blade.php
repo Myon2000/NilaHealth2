@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container mx-auto px-4 pt-24 pb-8">
-  <!-- Header Section with Animation -->
   <div class="text-center mb-12">
     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
       Jadwal Penanganan Ikan
@@ -19,7 +18,6 @@
     </button>
   </div>
 
-  <!-- Table Container with Enhanced Design -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -181,10 +179,8 @@
   </div>
 </div>
 
-<!-- Modal -->
 <div id="jadwalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
   <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl transform transition-all">
-    <!-- Modal Header -->
     <div class="flex items-center justify-between mb-6">
       <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
         <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,14 +195,11 @@
       </button>
     </div>
 
-    <!-- Form -->
     <form id="jadwalForm" onsubmit="handleSubmit(event)" class="space-y-6">
       @csrf
       <input type="hidden" id="jadwal_id">
 
-      <!-- Tanggal & Waktu Group -->
       <div class="grid grid-cols-2 gap-4">
-        <!-- Tanggal -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +211,6 @@
                  class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500">
         </div>
 
-        <!-- Waktu -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,7 +223,6 @@
         </div>
       </div>
 
-      <!-- Keterangan -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,7 +234,6 @@
                   class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 resize-none"></textarea>
       </div>
 
-      <!-- Pengulangan -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,7 +249,6 @@
         </select>
       </div>
 
-      <!-- Custom days -->
     <div id="daysContainer" class="hidden space-y-3">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
             <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,7 +269,6 @@
         </div>
     </div>
 
-      <!-- Remind before -->
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,7 +283,6 @@
         </div>
       </div>
 
-      <!-- Buttons -->
       <div class="flex justify-end space-x-3 pt-6">
         <button type="button" onclick="closeModal()"
                 class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors">
@@ -324,7 +311,6 @@
 
     function openModal(isEdit = false) {
     if (!isEdit) {
-        // reset form hanya jika bukan mode edit
         document.getElementById('jadwalForm').reset();
         document.getElementById('jadwal_id').value = '';
         document.getElementById('daysContainer').classList.add('hidden');
@@ -372,11 +358,7 @@
     setTimeout(()=>location.reload(),800);
   }
 
-  // ====================================
-  // EDIT: ambil data lama, prefill & modalTitle = "Edit Jadwal"
-  // ====================================
     async function editJadwal(id) {
-    // Buka modal dulu
     document.getElementById('jadwalModal').classList.replace('hidden','flex');
     
     const res = await fetch(`/jadwal/${id}`);
@@ -386,10 +368,8 @@
         return showToast(data.message||'Gagal ambil data');
     }
 
-    // Set judul
     document.getElementById('modalTitle').textContent = 'Edit Jadwal';
     
-    // Isi form dengan data
     document.getElementById('jadwal_id').value = data.id;
     document.getElementById('tanggal').value = data.tanggal;
     document.getElementById('waktu').value = data.waktu;
@@ -397,7 +377,6 @@
     document.getElementById('recurrence_type').value = data.recurrence_type;
     document.getElementById('remind_before').value = data.remind_before;
     
-    // Handle recurrence days
     toggleDays();
     document.querySelectorAll('input[name="recurrence_days[]"]').forEach(cb => {
         cb.checked = data.recurrence_days?.includes(cb.value) || false;

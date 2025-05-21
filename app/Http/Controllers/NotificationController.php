@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JadwalNotification;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Jadwal;
 
 class NotificationController extends Controller
 {
@@ -15,7 +18,6 @@ class NotificationController extends Controller
     public function index()
     {
         try {
-            // Assuming User model has notifications() relation
             $notifications = Auth::user()
                 ->notifications()
                 ->with(['jadwal:id,keterangan,waktu'])
@@ -65,6 +67,37 @@ class NotificationController extends Controller
         } catch (\Throwable $e) {
             Log::error('Notification markAllAsRead error: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['success' => false, 'message' => 'Gagal menandai semua notifikasi'], 500);
+        }
+    }
+
+    /**
+     * Send jadwal notification email.
+     */
+    public function sendJadwalNotification(Jadwal $jadwal)
+    {
+        try {
+            $notification = Notification::create([
+                'user_id' => $jadwal->users_id,
+                'jadwal_id' => $jadwal->id,
+                'message' => "Pengingat: {$jadwal->keterangan}",
+                'scheduled_at' => now(),
+            ]);
+
+            Mail::to($jadwal->user->email)
+                ->send(new JadwalNotification($jadwal));
+
+            $notification->update(['sent_at' => now()]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notifikasi berhasil dikirim'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to send jadwal notification: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim notifikasi'
+            ], 500);
         }
     }
 }

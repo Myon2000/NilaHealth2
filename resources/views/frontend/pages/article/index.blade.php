@@ -16,7 +16,6 @@
         transform: translateY(-5px) scale(1.01);
     }
 
-    /* Existing animations */
     .search-animation {
         animation: bounce 1s infinite;
     }
@@ -25,7 +24,6 @@
         50% { transform: translateY(0); }
     }
     
-    /* New animations for filtering */
     .article-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -66,7 +64,6 @@
 @section('content')
 <div class="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen pt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Header Section with Animation -->
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-4">
                 Artikel Edukasi
@@ -76,10 +73,8 @@
             </p>
         </div>
         
-        <!-- Search and Filter Section -->
         <div class="mb-12 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
             <div class="flex flex-col md:flex-row gap-6">
-                <!-- Enhanced Search -->
                 <div class="flex-1">
                     <form action="{{ route('articles.index') }}" method="GET" class="relative">
                         <input type="text" 
@@ -88,7 +83,6 @@
                             placeholder="Cari artikel..." 
                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                         >
-                        <!-- If there's a tag filter, preserve it -->
                         @if(request('tag') && request('tag') !== 'semua')
                             <input type="hidden" name="tag" value="{{ request('tag') }}">
                         @endif
@@ -100,7 +94,6 @@
                     </form>
                 </div>
                 
-                <!-- Enhanced Tag Filters -->
                 <div class="flex flex-wrap gap-3">
                     @foreach(['semua', 'penyakit', 'perawatan', 'budidaya'] as $tag)
                     <a href="{{ route('articles.index', ['tag' => $tag]) }}" 
@@ -130,12 +123,10 @@
             </div>
         </div>
 
-        <!-- Articles Grid -->
         <div id="articles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($articles as $article)
             <article class="article-item article-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden" data-tag="{{ $article->tag }}">
                 <div class="p-6">
-                    <!-- Tag Badge -->
                     <div class="flex justify-between items-start mb-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
                             {{ $article->tag === 'penyakit' ? 'bg-red-100 text-red-800' : 
@@ -154,7 +145,6 @@
                         </p>
                     </a>
 
-                    <!-- Article Footer -->
                     <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                         <div class="flex items-center space-x-3">
                             <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
@@ -184,7 +174,6 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
         <div class="mt-12">
             {{ $articles->links() }}
         </div>
@@ -200,10 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const paginationContainer = document.querySelector('.mt-12');
     let currentRequest = null;
     
-    // Get initial active tag from URL
     let activeTag = new URLSearchParams(window.location.search).get('tag') || 'semua';
     
-    // Set initial active state if no tag is selected
     if (!window.location.search.includes('tag=')) {
         const defaultLink = document.querySelector('[href*="articles.index"][href*="tag=semua"]');
         if (defaultLink) {
@@ -211,7 +198,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Handle tag filters
     document.querySelectorAll('[href*="articles.index"]').forEach(link => {
         link.addEventListener('click', async (e) => {
             e.preventDefault();
@@ -223,7 +209,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle search input with debounce
     searchInput.addEventListener('input', debounce(async () => {
         await handleFilter(activeTag, searchInput.value.trim());
     }, 300));
@@ -236,17 +221,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             container.style.opacity = '0.5';
             
-            // Preserve current URL parameters
             const url = new URL(window.location.href);
             
-            // Update search parameter
             if (search) {
                 url.searchParams.set('search', search);
             } else {
                 url.searchParams.delete('search');
             }
             
-            // Always maintain tag parameter if it's not 'semua'
             if (tag && tag !== 'semua') {
                 url.searchParams.set('tag', tag);
             } else if (tag === 'semua') {
@@ -268,7 +250,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const data = await response.json();
 
-            // Update content
             const currentArticles = container.querySelectorAll('.article-item');
             currentArticles.forEach(article => article.classList.add('hiding'));
 
@@ -279,10 +260,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 paginationContainer.innerHTML = data.pagination;
             }
 
-            // Update URL preserving both search and tag
             window.history.pushState({}, '', url.toString());
 
-            // Animate new articles
             const newArticles = container.querySelectorAll('.article-item');
             newArticles.forEach((article, index) => {
                 article.style.opacity = '0';

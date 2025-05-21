@@ -36,7 +36,6 @@
 @section('content')
 <div class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
 
-  <!-- Breadcrumb -->
   <nav class="bg-white dark:bg-gray-800 shadow-sm">
     <div class="max-w-screen-md mx-auto px-4 py-3">
       <div class="flex items-center space-x-2 text-sm">
@@ -49,7 +48,6 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="snap-start bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-900 dark:to-gray-800 flex items-center relative">
     <div class="absolute inset-0">
       <img src="/assets/hero/wave.svg" class="w-full h-full object-cover opacity-30" alt="Wave background">
@@ -65,7 +63,6 @@
   <section class="py-16 fade-in fade-delay-2">
     <div class="max-w-screen-md mx-auto px-4">
 
-      {{-- Notifikasi Profil --}}
       @if(session('status_profile') === 'profile-updated')
         <div class="mb-6 p-4 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 rounded-lg flex items-center justify-between fade-in">
           <div class="flex items-center">
@@ -82,7 +79,6 @@
         </div>
       @endif
 
-      {{-- Notifikasi Password --}}
       @if(session('status_password') === 'password-updated')
         <div class="mb-6 p-4 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 rounded-lg flex items-center justify-between fade-in">
           <div class="flex items-center">
@@ -103,11 +99,9 @@
         @csrf
         @method('patch')
 
-        <!-- Profile Information Section -->
         <div class="form-section">
           <h2 class="text-xl font-bold mb-6 text-gray-900 dark:text-white">Informasi Profil</h2>
           <div class="space-y-6">
-            <!-- Name Field -->
             <div class="input-field transition-all duration-200 has-tooltip">
               <label for="name" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">
                 Nama Lengkap <span class="text-red-500">*</span>
@@ -125,7 +119,6 @@
               @enderror
             </div>
 
-            <!-- Email Field -->
             <div class="input-field transition-all duration-200">
               <label for="email" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">
                 Alamat Email <span class="text-red-500">*</span>
@@ -140,13 +133,11 @@
           </div>
         </div>
 
-        <!-- Password Section -->
         <div class="form-section">
           <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Ubah Password</h2>
           <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Kosongkan bidang ini jika Anda tidak ingin mengubah password</p>
           
           <div class="space-y-6">
-            <!-- Current Password -->
             <div class="input-field transition-all duration-200">
               <label for="current_password" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">
                 Password Saat Ini
@@ -159,7 +150,6 @@
               @enderror
             </div>
 
-            <!-- New Password -->
             <div class="input-field transition-all duration-200">
               <label for="password" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">
                 Password Baru
@@ -172,7 +162,6 @@
               @enderror
             </div>
 
-            <!-- Confirm Password -->
             <div class="input-field transition-all duration-200">
               <label for="password_confirmation" class="block font-medium mb-1 text-gray-700 dark:text-gray-300">
                 Konfirmasi Password Baru
@@ -187,7 +176,6 @@
           </div>
         </div>
 
-        <!-- Submit Button (hidden until change) -->
         <div class="flex justify-end gap-4">
           <a href="{{ route('profile.show') }}" 
             class="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-200">

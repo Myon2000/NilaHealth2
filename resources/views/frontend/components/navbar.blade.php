@@ -1,17 +1,14 @@
 <nav class="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-3 bg-[#003366] dark:bg-gray-900 text-white transition-colors shadow-lg z-50">
-  <!-- Logo -->
   <div class="flex items-center space-x-2">
     <img src="{{ asset('assets/logo.png') }}" class="h-8 w-8" alt="Logo">
     <a class="font-bold text-base" href="{{ route('home') }}">NilaHealth</a>
   </div>
 
-  <!-- Navigation Links (Desktop) -->
   <div class="hidden md:flex items-center space-x-8">
     <a href="{{ route('diagnosis.form') }}" class="hover:text-blue-400 transition">Diagnosis</a>
     <a href="{{ route('home') }}#schedule" class="hover:text-blue-400 transition">Schedule</a>
     <a href="{{ route('home') }}#article" class="hover:text-blue-400 transition">Article</a>
 
-    <!-- Profile Dropdown -->
     <div class="relative" x-data="{ open: false }">
       <button @click="open = !open" @click.away="open = false"
               class="flex items-center hover:text-blue-400 transition">
@@ -37,7 +34,6 @@
       </div>
     </div>
 
-    <!-- Theme Toggle -->
     <button id="theme-toggle"
             class="p-2 rounded-full border border-yellow-400 hover:bg-yellow-400 hover:text-gray-900 transition duration-300 ease-in-out">
       <svg id="theme-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -49,7 +45,6 @@
     </button>
   </div>
 
-  <!-- Mobile Menu -->
   <div class="md:hidden relative" x-data="{ open: false }">
     <button @click="open = !open"
             class="focus:outline-none p-2 rounded hover:bg-white/10 transition">

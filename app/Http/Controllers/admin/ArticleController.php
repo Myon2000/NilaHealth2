@@ -28,7 +28,7 @@ class ArticleController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string|max:255|unique:artikel',
-            'isi' => 'required|string|min:100', // Minimum karakter
+            'isi' => 'required|string|min:100',
             'tag' => 'required|in:penyakit,perawatan,budidaya'
         ]);
 
@@ -71,10 +71,8 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         try {
-            // Hapus semua komentar terkait
             $article->comments()->delete();
             
-            // Hapus artikel
             $article->delete();
             
             return redirect()

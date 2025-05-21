@@ -17,7 +17,7 @@ class CommentController extends Controller
 
         $comment = Comment::create([
             'artikel_id' => $article->id,
-            'users_id' => Auth::id(), // Changed from auth()->id()
+            'users_id' => Auth::id(),
             'isi' => $validated['isi']
         ]);
 
@@ -34,7 +34,7 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        if ($comment->users_id !== Auth::id()) { // Changed from auth()->id()
+        if ($comment->users_id !== Auth::id()) { 
             return back()->with('error', 'Anda tidak memiliki izin untuk menghapus komentar ini');
         }
 

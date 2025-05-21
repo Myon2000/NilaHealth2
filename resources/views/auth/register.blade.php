@@ -2,7 +2,6 @@
 
 @section('extraCSS')
 <style>
-  /* Custom fade-in animation */
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .fade-in { opacity: 0; animation: fadeIn 1s ease-in-out forwards; }
   .fade-delay-1 { animation-delay: 0.3s; }
@@ -11,7 +10,6 @@
 @endsection
 
 @section('content')
-<!-- Hero Section -->
 <section class="relative pt-16 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white fade-in fade-delay-1">
   <div class="absolute inset-0 overflow-hidden">
     <img src="/assets/hero/wave.svg" class="w-full h-full object-cover opacity-30" alt="Wave background">
@@ -24,13 +22,11 @@
   </div>
 </section>
 
-<!-- Register Form Section -->
 <section class="py-16 bg-white fade-in fade-delay-2">
     <div class="max-w-md mx-auto px-4">
       <div class="bg-white p-8 rounded-2xl shadow-lg">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Register</h2>
   
-        {{-- ALERT ERROR --}}
         @if ($errors->any())
           <div class="mb-4">
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative" role="alert">

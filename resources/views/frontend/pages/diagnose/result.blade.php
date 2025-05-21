@@ -2,7 +2,6 @@
 
 @section('extraCSS')
 <style>
-    /* Cool animations and effects */
     .fade-in {
         opacity: 0;
         transform: translateY(30px);
@@ -14,7 +13,6 @@
         transform: translateY(0);
     }
 
-    /* Glassmorphism card design */
     .glass-card {
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(12px);
@@ -24,7 +22,6 @@
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
-    /* Cool image container */
     .image-preview-wrapper {
         position: relative;
         display: block;
@@ -45,7 +42,6 @@
         transform: scale(1.05);
     }
 
-    /* Modern prediction label */
     .prediction-label {
         position: absolute;
         bottom: 20px;
@@ -67,7 +63,6 @@
         transform: translateY(-5px);
     }
 
-    /* Cool confidence bar */
     .confidence-bar {
         width: 100%;
         height: 6px;
@@ -84,7 +79,6 @@
         transition: width 1s ease-out;
     }
 
-    /* Gen Z-style button */
     .cta-button {
         background: linear-gradient(135deg, #3b82f6, #60a5fa);
         color: white;
@@ -116,7 +110,6 @@
         box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
     }
 
-    /* Responsive design */
     @media (max-width: 640px) {
         .glass-card {
             padding: 1.25rem;

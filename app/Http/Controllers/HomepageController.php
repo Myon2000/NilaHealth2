@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Notification;
 use App\Models\Article;
 
-// Uncomment when models exist
-// use App\Models\Schedule;
-// use App\Models\Article;
-
 class HomepageController extends Controller
 {
     /**
@@ -27,7 +23,6 @@ class HomepageController extends Controller
                         ->orderBy('waktu', 'asc')
                         ->get();
 
-        // Tambahkan query untuk artikel
         $latestArticles = Article::with('author')
                                 ->latest()
                                 ->take(3)

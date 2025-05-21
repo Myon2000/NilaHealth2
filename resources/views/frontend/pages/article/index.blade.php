@@ -105,7 +105,7 @@
                     @foreach(['semua', 'penyakit', 'perawatan', 'budidaya'] as $tag)
                     <a href="{{ route('articles.index', ['tag' => $tag]) }}" 
                         class="px-6 py-3 rounded-xl font-medium transition-all duration-300 
-                        {{ request('tag') === $tag 
+                        {{ (!request('tag') && $tag === 'semua') || request('tag') === $tag 
                             ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105' 
                             : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
                         <span class="flex items-center">
@@ -202,6 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Get initial active tag from URL
     let activeTag = new URLSearchParams(window.location.search).get('tag') || 'semua';
+    
+    // Set initial active state if no tag is selected
+    if (!window.location.search.includes('tag=')) {
+        const defaultLink = document.querySelector('[href*="articles.index"][href*="tag=semua"]');
+        if (defaultLink) {
+            updateActiveTag(defaultLink);
+        }
+    }
 
     // Handle tag filters
     document.querySelectorAll('[href*="articles.index"]').forEach(link => {

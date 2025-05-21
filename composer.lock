@@ -4,8 +4,133 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcd2e7d1cf4b7880b7d22cfd914ffe88",
+    "content-hash": "4a9d66da8b2ef13f9ce29dc6389a4e66",
     "packages": [
+        {
+            "name": "async-aws/core",
+            "version": "1.26.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-aws/core.git",
+                "reference": "58ab79116d990e7053b2e31162f47df4223148c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-aws/core/zipball/58ab79116d990e7053b2e31162f47df4223148c5",
+                "reference": "58ab79116d990e7053b2e31162f47df4223148c5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "php": "^7.2.5 || ^8.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2.1 || ^3.0",
+                "symfony/http-client": "^4.4.16 || ^5.1.7 || ^6.0 || ^7.0",
+                "symfony/http-client-contracts": "^1.1.8 || ^2.0 || ^3.0",
+                "symfony/service-contracts": "^1.0 || ^2.0 || ^3.0"
+            },
+            "conflict": {
+                "async-aws/s3": "<1.1",
+                "symfony/http-client": "5.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.26-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AsyncAws\\Core\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Core package to integrate with AWS. This is a lightweight AWS SDK provider by AsyncAws.",
+            "keywords": [
+                "amazon",
+                "async-aws",
+                "aws",
+                "sdk",
+                "sts"
+            ],
+            "support": {
+                "source": "https://github.com/async-aws/core/tree/1.26.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jderusse",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nyholm",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-05-12T09:35:01+00:00"
+        },
+        {
+            "name": "async-aws/ses",
+            "version": "1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/async-aws/ses.git",
+                "reference": "904ee7b5c07d865c20db4c06c3c0b97e7035673d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/async-aws/ses/zipball/904ee7b5c07d865c20db4c06c3c0b97e7035673d",
+                "reference": "904ee7b5c07d865c20db4c06c3c0b97e7035673d",
+                "shasum": ""
+            },
+            "require": {
+                "async-aws/core": "^1.9",
+                "ext-json": "*",
+                "php": "^7.2.5 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.12-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AsyncAws\\Ses\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "SES client, part of the AWS SDK provided by AsyncAws.",
+            "keywords": [
+                "amazon",
+                "async-aws",
+                "aws",
+                "sdk",
+                "ses"
+            ],
+            "support": {
+                "source": "https://github.com/async-aws/ses/tree/1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/jderusse",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nyholm",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-05-12T09:35:01+00:00"
+        },
         {
             "name": "blade-ui-kit/blade-heroicons",
             "version": "2.6.0",
@@ -2950,6 +3075,55 @@
             "time": "2024-07-20T21:41:07+00:00"
         },
         {
+            "name": "psr/cache",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "reference": "aa5030cfa5405eccfdcb1083ce040c2cb8d253bf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "support": {
+                "source": "https://github.com/php-fig/cache/tree/3.0.0"
+            },
+            "time": "2021-02-03T23:26:27+00:00"
+        },
+        {
             "name": "psr/clock",
             "version": "1.0.0",
             "source": {
@@ -3653,6 +3827,72 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+            "name": "symfony/amazon-mailer",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/amazon-mailer.git",
+                "reference": "7dd225078938bc52b114cd295449170e25ca9229"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/amazon-mailer/zipball/7dd225078938bc52b114cd295449170e25ca9229",
+                "reference": "7dd225078938bc52b114cd295449170e25ca9229",
+                "shasum": ""
+            },
+            "require": {
+                "async-aws/ses": "^1.3",
+                "php": ">=8.2",
+                "symfony/mailer": "^7.2"
+            },
+            "require-dev": {
+                "symfony/http-client": "^6.4|^7.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Amazon\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Amazon Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/amazon-mailer/tree/v7.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-28T08:24:38+00:00"
+        },
+        {
             "name": "symfony/clock",
             "version": "v7.2.0",
             "source": {
@@ -4247,6 +4487,179 @@
             "time": "2024-12-30T19:00:17+00:00"
         },
         {
+            "name": "symfony/http-client",
+            "version": "v7.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-client.git",
+                "reference": "78981a2ffef6437ed92d4d7e2a86a82f256c6dc6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/78981a2ffef6437ed92d4d7e2a86a82f256c6dc6",
+                "reference": "78981a2ffef6437ed92d4d7e2a86a82f256c6dc6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "psr/log": "^1|^2|^3",
+                "symfony/deprecation-contracts": "^2.5|^3",
+                "symfony/http-client-contracts": "~3.4.4|^3.5.2",
+                "symfony/service-contracts": "^2.5|^3"
+            },
+            "conflict": {
+                "amphp/amp": "<2.5",
+                "php-http/discovery": "<1.15",
+                "symfony/http-foundation": "<6.4"
+            },
+            "provide": {
+                "php-http/async-client-implementation": "*",
+                "php-http/client-implementation": "*",
+                "psr/http-client-implementation": "1.0",
+                "symfony/http-client-implementation": "3.0"
+            },
+            "require-dev": {
+                "amphp/http-client": "^4.2.1|^5.0",
+                "amphp/http-tunnel": "^1.0|^2.0",
+                "amphp/socket": "^1.1",
+                "guzzlehttp/promises": "^1.4|^2.0",
+                "nyholm/psr7": "^1.0",
+                "php-http/httplug": "^1.0|^2.0",
+                "psr/http-client": "^1.0",
+                "symfony/amphp-http-client-meta": "^1.0|^2.0",
+                "symfony/dependency-injection": "^6.4|^7.0",
+                "symfony/http-kernel": "^6.4|^7.0",
+                "symfony/messenger": "^6.4|^7.0",
+                "symfony/process": "^6.4|^7.0",
+                "symfony/rate-limiter": "^6.4|^7.0",
+                "symfony/stopwatch": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\HttpClient\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "http"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/http-client/tree/v7.2.4"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-02-13T10:27:23+00:00"
+        },
+        {
+            "name": "symfony/http-client-contracts",
+            "version": "v3.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-client-contracts.git",
+                "reference": "ee8d807ab20fcb51267fdace50fbe3494c31e645"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/ee8d807ab20fcb51267fdace50fbe3494c31e645",
+                "reference": "ee8d807ab20fcb51267fdace50fbe3494c31e645",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
+                "branch-alias": {
+                    "dev-main": "3.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Contracts\\HttpClient\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Test/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Generic abstractions related to HTTP clients",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "abstractions",
+                "contracts",
+                "decoupling",
+                "interfaces",
+                "interoperability",
+                "standards"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/http-client-contracts/tree/v3.5.2"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-12-07T08:49:48+00:00"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "v7.2.6",
             "source": {
@@ -4517,6 +4930,75 @@
                 }
             ],
             "time": "2025-04-04T09:50:51+00:00"
+        },
+        {
+            "name": "symfony/mailgun-mailer",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailgun-mailer.git",
+                "reference": "3c1dfd9ff0a487a4116baec42d11ae21a061e3f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/3c1dfd9ff0a487a4116baec42d11ae21a061e3f1",
+                "reference": "3c1dfd9ff0a487a4116baec42d11ae21a061e3f1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/mailer": "^7.2"
+            },
+            "conflict": {
+                "symfony/http-foundation": "<6.4"
+            },
+            "require-dev": {
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/webhook": "^6.4|^7.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Mailgun\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Mailgun Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/mailgun-mailer/tree/v7.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-09-28T08:24:38+00:00"
         },
         {
             "name": "symfony/mime",

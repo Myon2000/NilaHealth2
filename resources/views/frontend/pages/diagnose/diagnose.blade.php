@@ -4,8 +4,12 @@
 <style>
     @media (max-width: 640px) {
         .diagnose-container {
+            max-height: calc(100vh - 6rem);
             padding: 1.25rem;
-            margin: 0.75rem;
+        }
+
+        #preview-container {
+            max-height: 200px; /* Smaller height for mobile */
         }
 
         h2 {
@@ -18,7 +22,7 @@
         }
 
         #preview-image {
-            max-height: 16rem;
+            max-height: 200px;
         }
 
         .diagnose-button {
@@ -55,14 +59,25 @@
         transform: translateY(0);
     }
 
-    /* Enhanced Container Styles */
+    /* Updated Preview Container Styles */
     .diagnose-container {
+        max-height: calc(100vh - 8rem); /* Account for header and padding */
+        overflow-y: auto;
+        scrollbar-width: thin;
+        -ms-overflow-style: none;
+    }
+
+    .diagnose-container::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .diagnose-container::-webkit-scrollbar-track {
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 1rem;
-        padding: 2rem;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .diagnose-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
     }
 
     /* File Input Styling */
@@ -94,19 +109,34 @@
     #preview-container {
         margin-top: 1.5rem;
         transition: all 0.3s ease;
+        position: relative;
+        max-height: 300px; /* Adjust this value as needed */
+        overflow: hidden;
     }
 
     #preview-image {
-        max-height: 24rem;
         width: 100%;
+        height: 100%;
         object-fit: contain;
-        border-radius: 1rem;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
+        max-height: 300px; /* Match container max-height */
     }
 
     #preview-image:hover {
         transform: scale(1.02);
+    }
+
+    .preview-enter {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    
+    .preview-enter-active {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.3s, transform 0.3s;
     }
 
     /* Button Enhancement */
@@ -128,6 +158,17 @@
     .dark .file-input-trigger {
         background: rgba(17, 24, 39, 0.5);
         border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .preview-loading::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 @endsection
@@ -224,18 +265,46 @@
         }
 
         // Add loading state
-        previewContainer.classList.add('opacity-50');
+        previewContainer.classList.add('preview-loading');
+        previewContainer.classList.remove('hidden');
         
         const reader = new FileReader();
         reader.onload = function(e) {
-            previewImage.src = e.target.result;
-            previewContainer.classList.remove('hidden', 'opacity-50');
-            fileInputTrigger.classList.add('border-blue-500');
-            
-            // Animate scroll to preview
-            previewContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Create new image to check dimensions
+            const img = new Image();
+            img.onload = function() {
+                previewImage.src = e.target.result;
+                
+                // Add entrance animation classes
+                previewContainer.classList.add('preview-enter');
+                requestAnimationFrame(() => {
+                    previewContainer.classList.add('preview-enter-active');
+                    previewContainer.classList.remove('preview-enter', 'preview-loading');
+                });
+
+                fileInputTrigger.classList.add('border-blue-500');
+                
+                // Smooth scroll only if preview is out of view
+                const containerRect = previewContainer.getBoundingClientRect();
+                const isOutOfView = containerRect.bottom > window.innerHeight;
+                
+                if (isOutOfView) {
+                    previewContainer.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest'
+                    });
+                }
+            };
+            img.src = e.target.result;
         };
         reader.readAsDataURL(file);
+
+        // Add error handling
+        reader.onerror = function() {
+            previewContainer.classList.add('hidden');
+            previewContainer.classList.remove('preview-loading');
+            alert('Error loading image. Please try again.');
+        };
     }
 </script>
 @endsection

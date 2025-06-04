@@ -1,63 +1,100 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomepageController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DiagnosisController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{
+    ProfileController,
+    HomepageController,
+    AdminController,
+    UserController,
+    DiagnosisController,
+    Admin\DiagnosisController as AdminDiagnosisController,
+    JadwalController,
+    NotificationController,
+    ArticleController,
+    CommentController,
+    Admin\ArticleController as AdminArticleController,
+};
 use App\Models\Diagnosis;
 
-Route::middleware('auth')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Auth & Debug
+|--------------------------------------------------------------------------
+*/
+Route::get('/_debug-mail', fn() => response()->json([
+    'mailer'     => env('MAIL_MAILER'),
+    'default'    => config('mail.default'),
+    'host'       => config('mail.mailers.smtp.host'),
+    'port'       => config('mail.mailers.smtp.port'),
+    'username'   => config('mail.mailers.smtp.username'),
+    'encryption' => config('mail.mailers.smtp.encryption'),
+]));
+require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')
+     ->prefix('admin')
+     ->name('admin.')
+     ->group(function () {
+         Route::get('dashboard', [AdminController::class, 'index'])
+              ->name('dashboard');
+         Route::get('users', [UserController::class, 'index'])->name('users.index');
+         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+         Route::get('diagnoses', [AdminDiagnosisController::class, 'index'])
+              ->name('diagnoses');
+         Route::resource('articles', AdminArticleController::class);
+
+     });
+
+/*
+|--------------------------------------------------------------------------
+| User‐side Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth','verified'])
+     ->group(function () {
+
     Route::get('/', [HomepageController::class, 'index'])->name('home');
-    Route::get('/diagnosis', [DiagnosisController::class,'form']   )->name('diagnosis.form');
-    Route::post('/diagnosis', [DiagnosisController::class,'predict'])->name('diagnosis.predict');
-    Route::get('/diagnosis/result', [DiagnosisController::class,'result'] )->name('diagnosis.result');
-    Route::get('/diagnosis/recommendation/{disease}', [DiagnosisController::class, 'recommendation'])->name('diagnosis.recommendation');
-    Route::get('/diagnosis/classes', function () {
-        // Ambil hasil diagnosis yang sudah ada di database
-        $classes = Diagnosis::select('hasil_diagnosis')->distinct()->get()->pluck('hasil_diagnosis');
-        
-        return response()->json($classes);
+
+    Route::get('/diagnosis', [DiagnosisController::class, 'form'])->name('diagnosis.form');
+    Route::post('/diagnosis', [DiagnosisController::class, 'predict'])->name('diagnosis.predict');
+    Route::get('/diagnosis/result', [DiagnosisController::class, 'result'])->name('diagnosis.result');
+    Route::get('/diagnosis/recommendation/{disease}', [DiagnosisController::class, 'recommendation'])
+         ->name('diagnosis.recommendation');
+    Route::get('/diagnosis/classes', fn() => response()->json(
+        Diagnosis::distinct()->pluck('hasil_diagnosis')
+    ));
+
+    Route::get('/uploads/original/{filename}', function($filename){
+        $path = storage_path("app/nilahealth-model/uploads/original/$filename");
+        abort_unless(file_exists($path), 404);
+        return response()->file($path);
     });
 
-    Route::get('/uploads/original/{filename}', function ($filename) {
-        $path = storage_path('app/nilahealth-model/uploads/original/' . $filename);
-        if (file_exists($path)) {
-            return response()->file($path);
-        }
-    
-        abort(404);
+    Route::controller(ProfileController::class)->group(function(){
+        Route::get('/profile','show')->name('profile.show');
+        Route::get('/profile/edit','edit')->name('profile.edit');
+        Route::patch('/profile','update')->name('profile.update');
+        Route::delete('/profile','destroy')->name('profile.destroy');
     });
 
+    Route::post('/jadwal', [HomepageController::class, 'store'])->name('jadwal.store');
+    Route::get('/jadwal/{jadwal}', [HomepageController::class, 'show'])->name('jadwal.show');
+    Route::put('/jadwal/{jadwal}', [HomepageController::class, 'update'])->name('jadwal.update');
+    Route::delete('/jadwal/{jadwal}', [HomepageController::class, 'destroy'])->name('jadwal.destroy');
 
-    // Admin area
-    Route::prefix('admin')
-         ->name('admin.')
-         ->group(function () {
-            Route::get('dashboard', [AdminController::class, 'index'])
-                  ->name('dashboard');
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+    Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::post('/articles/{article}/comments', [ArticleController::class, 'storeComment'])->name('articles.comments.store');
 
-            Route::get('users', [UserController::class, 'index'])
-                  ->name('users');
-            Route::delete('users/{user}', [UserController::class, 'destroy'])
-                  ->name('users.destroy');
-         });
+    Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])
-         ->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])
-         ->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-         ->name('profile.destroy');
-    Route::get('/profile', [ProfileController::class, 'show'])
-         ->middleware(['auth'])
-         ->name('profile.show');
+    Route::post('/notifications/jadwal/{jadwal}', [NotificationController::class, 'sendJadwalNotification'])
+         ->name('notifications.jadwal.send');
 
 });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-require __DIR__.'/auth.php';

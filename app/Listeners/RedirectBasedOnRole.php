@@ -10,7 +10,6 @@ class RedirectBasedOnRole
     {
         $user = $event->user;
 
-        // Simpan route tujuan ke session untuk dipakai di controller login
         if ($user->role === 'admin') {
             Session::put('url.intended', route('admin.dashboard'));
         } else {

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -33,6 +34,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -43,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'last_login'        => 'datetime',  // <- Tambahkan ini
+            'last_login'        => 'datetime',
             'created_at'        => 'datetime',
             'updated_at'        => 'datetime',
         ];
@@ -54,4 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Diagnosis::class);
     }
 
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'users_id');
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
 }

@@ -10,10 +10,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        // ambil arah sort yang diinginkan, default newest first
         $direction = $request->get('direction', 'desc') === 'asc' ? 'asc' : 'desc';
 
-        // hanya role user, urut berdasarkan last_login
         $users = User::where('role', 'user')
                      ->orderBy('last_login', $direction)
                      ->get();
@@ -26,7 +24,7 @@ class UserController extends Controller
         abort_if($user->role !== 'user', 403);
 
         $user->delete();
-        return redirect()->route('admin.users')
+        return redirect()->route('admin.users.index')
                          ->with('status', "User “{$user->name}” berhasil dihapus.");
     }
 }

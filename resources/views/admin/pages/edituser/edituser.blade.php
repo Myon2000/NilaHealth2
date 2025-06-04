@@ -66,7 +66,6 @@
   </div>
 </div>
 
-{{-- Konfirmasi Hapus dengan Prompt Input (Email) --}}
 <script>
   function confirmDelete(e, email) {
     e.preventDefault();

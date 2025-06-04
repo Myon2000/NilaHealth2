@@ -6,7 +6,9 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -32,21 +34,38 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's profile information and password.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
 
         $user->fill($request->validated());
-
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        if ($user->wasChanged(['name', 'email'])) {
+            session()->flash('status_profile', 'profile-updated');
+        }
+
+        if ($request->filled('current_password') || $request->filled('password')) {
+            $request->validate([
+                'current_password' => ['required', 'current_password'],
+                'password'         => ['required', 'string', 'min:8', 'confirmed'],
+            ], [
+                'current_password.current_password' => 'Password saat ini tidak cocok.',
+            ]);
+
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
+
+            session()->flash('status_password', 'password-updated');
+        }
+
+        return Redirect::route('profile.edit');
     }
 
     /**

@@ -11,7 +11,6 @@ class DiagnosesAndPenangananSeeder extends Seeder
 {
     public function run()
     {
-        // Buat user dummy jika belum ada
         $user = User::firstOrCreate(
             ['email' => 'nilahealth@example.com'],
             [

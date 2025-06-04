@@ -24,7 +24,7 @@ class UserController extends Controller
         abort_if($user->role !== 'user', 403);
 
         $user->delete();
-        return redirect()->route('admin.users')
+        return redirect()->route('admin.users.index')
                          ->with('status', "User “{$user->name}” berhasil dihapus.");
     }
 }

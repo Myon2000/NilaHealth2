@@ -151,7 +151,7 @@ def predict():
             "recommendation": rec
         }
 
-        if confidence < 0.75:
+        if confidence < 0.80:
             result["warning"] = "Pastikan gambar yang kamu upload adalah gambar Nile Tilapia."
 
         return jsonify(result)

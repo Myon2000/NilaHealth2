@@ -1,6 +1,6 @@
 <nav class="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-3 bg-[#003366] dark:bg-gray-900 text-white transition-colors shadow-lg z-50">
   <div class="flex items-center space-x-2">
-    <img src="{{ asset('assets/logo.png') }}" class="h-8 w-8" alt="Logo">
+    <img src="{{ asset('assets/icon/Logo.png') }}" class="h-8 w-8" alt="Logo">
     <a class="font-bold text-base" href="{{ route('home') }}">NilaHealth</a>
   </div>
 

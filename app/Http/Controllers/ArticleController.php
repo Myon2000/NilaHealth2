@@ -41,7 +41,49 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         $article->load(['comments.user', 'author']);
-        return view('frontend.pages.article.show', compact('article'));
+        
+        // Format artikel untuk tampilan yang lebih baik
+        $article->isi = $this->formatArticleContent($article->isi);
+        
+        // Cari artikel terkait berdasarkan tag
+        $relatedArticles = Article::where('tag', $article->tag)
+                                 ->where('id', '!=', $article->id)
+                                 ->latest()
+                                 ->take(3)
+                                 ->get();
+        
+        return view('frontend.pages.article.show', compact('article', 'relatedArticles'));
+    }
+
+    /**
+     * Format konten artikel untuk menampilkan paragraf dengan jelas
+     *
+     * @param string $content
+     * @return string
+     */
+    private function formatArticleContent($content)
+    {
+        // Jika konten sudah berisi tag HTML, jangan format ulang
+        if (strpos($content, '<p>') !== false) {
+            return $content;
+        }
+        
+        // Deteksi paragraf berdasarkan baris kosong
+        $content = preg_replace('/\n\s*\n/', '</p><p>', $content);
+        
+        // Deteksi kalimat panjang (berakhiran titik, dll) sebagai paragraf terpisah
+        // jika belum ada pembagian paragraf di dalam konten
+        if (strpos($content, '</p><p>') === false) {
+            $content = preg_replace('/(\.|!|\?)\s+(?=[A-Z])/', '$1</p><p>', $content);
+        }
+        
+        // Pastikan konten dimulai dan diakhiri dengan tag paragraf
+        $content = '<p>' . $content . '</p>';
+        
+        // Hapus tag paragraf kosong
+        $content = str_replace(['<p></p>', '<p> </p>'], '', $content);
+        
+        return $content;
     }
 
     public function storeComment(Request $request, Article $article)

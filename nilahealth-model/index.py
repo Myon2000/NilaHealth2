@@ -13,6 +13,7 @@ import json
 import mysql.connector
 from mysql.connector import Error
 import logging
+import time
 
 # === Flask Setup ===
 app = Flask(__name__)
@@ -26,7 +27,7 @@ os.makedirs(PREDICT_FOLDER, exist_ok=True)
 
 # === Load Model & Class Names ===
 try:
-    model = tf.keras.models.load_model("model/efficientnet_model.keras")
+    model = tf.keras.models.load_model("model/final_model.keras")
     with open("model/class_names.json", "r") as f:
         class_names = json.load(f)
 except Exception as e:
@@ -92,14 +93,17 @@ def home():
     return "✅ NilaHealth Flask API is running. Use /predict for POST image."
 
 @app.route("/predict", methods=["POST"])
-@app.route("/predict", methods=["POST"])
 def predict():
     if 'image' not in request.files:
         app.logger.error("No file uploaded.")
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files['image']
-    filename = secure_filename(file.filename)
+    
+    # Generate unique filename dengan timestamp
+    timestamp = int(time.time())
+    original_filename = secure_filename(file.filename)
+    filename = f"{timestamp}_{original_filename}"
 
     original_path = os.path.join(ORIGINAL_FOLDER, filename)
     try:
@@ -114,45 +118,54 @@ def predict():
         proba = preds[0]
         idx = np.argmax(proba)
         confidence = float(proba[idx])
-        label = class_names[idx]
-        label_text = f"{label} ({confidence * 100:.2f}%)"
-
-        predicted_name = f"pred_{filename}.png"
-        predicted_path = os.path.join(PREDICT_FOLDER, predicted_name)
-        create_prediction_image(original_path, label_text, predicted_path)
-
-        connection = get_db_connection()
-        if not connection:
-            return jsonify({"error": "Error connecting to database."}), 500
-
-        cursor = connection.cursor(dictionary=True)
-        sql = """
-          SELECT d.hasil_diagnosis,
-                 p.deskripsi AS recommendation
-          FROM diagnoses d
-          LEFT JOIN penanganans p
-            ON p.diagnosis_id = d.id
-          WHERE d.hasil_diagnosis = %s
-        """
-        cursor.execute(sql, (label,))
-        row = cursor.fetchone()
-        connection.close()
-
-        if row and row["recommendation"]:
-            rec = row["recommendation"]
-        else:
-            rec = "No recommendations available."
-
+        confidence_percent = round(confidence * 100, 2)
+        
+        # Base result yang selalu ada
         result = {
-            "prediction": label,
-            "confidence": round(confidence * 100, 2),
             "original_image_url": f"/uploads/original/{filename}",
-            "predicted_image_url": f"/uploads/predict/{predicted_name}",
-            "recommendation": rec
+            "confidence": confidence_percent,
         }
 
-        if confidence < 0.80:
-            result["warning"] = "Pastikan gambar yang kamu upload adalah gambar Nile Tilapia."
+        # Jika confidence tinggi (≥80%), tambahkan detail prediksi
+        if confidence >= 0.80:
+            label = class_names[idx]
+            label_text = f"{label} ({confidence_percent:.2f}%)"
+
+            predicted_name = f"pred_{filename}.png"
+            predicted_path = os.path.join(PREDICT_FOLDER, predicted_name)
+            create_prediction_image(original_path, label_text, predicted_path)
+
+            connection = get_db_connection()
+            rec = "No recommendations available."
+            
+            if connection:
+                try:
+                    cursor = connection.cursor(dictionary=True)
+                    sql = """
+                      SELECT d.hasil_diagnosis,
+                             p.deskripsi AS recommendation
+                      FROM diagnoses d
+                      LEFT JOIN penanganans p
+                        ON p.diagnosis_id = d.id
+                      WHERE d.hasil_diagnosis = %s
+                    """
+                    cursor.execute(sql, (label,))
+                    row = cursor.fetchone()
+                    
+                    if row and row["recommendation"]:
+                        rec = row["recommendation"]
+                finally:
+                    connection.close()
+
+            # Tambahkan informasi untuk confidence tinggi
+            result.update({
+                "prediction": label,
+                "predicted_image_url": f"/uploads/predict/{predicted_name}",
+                "recommendation": rec
+            })
+        else:
+            # Untuk confidence rendah, hanya tambahkan pesan warning
+            result["warning"] = "Nilai prediksi terlalu rendah. Pastikan gambar yang di upload adalah gambar ikan nila."
 
         return jsonify(result)
 

@@ -2,18 +2,122 @@
 
 @section('extraCSS')
 <style>
+    /* Enhanced Article Typography */
     .article-content h2 {
         @apply text-2xl font-bold mt-8 mb-4 text-gray-800 dark:text-gray-200;
     }
+    
+    .article-content h3 {
+        @apply text-xl font-bold mt-6 mb-3 text-gray-800 dark:text-gray-200;
+    }
+    
     .article-content p {
-        @apply mb-6 leading-relaxed text-gray-600 dark:text-gray-300;
+        @apply mb-6 leading-relaxed text-gray-600 dark:text-gray-300 text-base sm:text-lg;
+        display: block; /* Memastikan selalu block */
+        text-indent: 1em; /* Indentasi awal paragraf */
+        text-align: justify; /* Rata kanan-kiri */
+        max-width: 100%; /* Mencegah overflow */
+        overflow-wrap: break-word; /* Handling kata panjang */
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
     }
+    
+    .article-content ul, .article-content ol {
+        @apply mb-6 pl-6 text-gray-600 dark:text-gray-300;
+    }
+    
+    .article-content ul {
+        @apply list-disc;
+    }
+    
+    .article-content ol {
+        @apply list-decimal;
+    }
+    
+    .article-content li {
+        @apply mb-2;
+    }
+    
+    .article-content a {
+        @apply text-blue-600 dark:text-blue-400 hover:underline;
+    }
+    
+    .article-content blockquote {
+        @apply border-l-4 border-blue-500 pl-4 py-2 my-6 bg-blue-50 dark:bg-blue-900/30 rounded-r-lg italic text-gray-700 dark:text-gray-300;
+    }
+    
     .article-content img {
-        @apply rounded-lg shadow-lg my-8 mx-auto;
+        @apply rounded-lg shadow-lg my-8 mx-auto max-w-full h-auto;
     }
+    
+    .article-content figure {
+        @apply my-8;
+    }
+    
+    .article-content figcaption {
+        @apply text-center text-sm text-gray-500 dark:text-gray-400 mt-2;
+    }
+    
+    .article-content pre {
+        @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto my-6;
+    }
+    
+    .article-content code {
+        @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm;
+    }
+    
+    .article-content table {
+        @apply w-full border-collapse my-6;
+    }
+    
+    .article-content th {
+        @apply bg-gray-100 dark:bg-gray-700 text-left p-2 border border-gray-200 dark:border-gray-700;
+    }
+    
+    .article-content td {
+        @apply p-2 border border-gray-200 dark:border-gray-700;
+    }
+    
+    /* Memastikan batas antar-paragraf terlihat jelas */
+    .article-content p + p {
+        margin-top: 1em;
+        border-top: 1px solid rgba(229, 231, 235, 0.3);
+        padding-top: 1em;
+    }
+    
+    /* Hindari CSS terputus di akhir artikel */
+    .article-content > *:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    .article-content::after {
+        content: "";
+        display: block;
+        clear: both;
+        height: 1px;
+    }
+    
+    /* Improved spacing for mobile */
+    @media (max-width: 640px) {
+        .article-content h2 {
+            @apply text-xl mt-6 mb-3;
+        }
+        
+        .article-content p {
+            @apply text-base mb-4;
+            text-align: left; /* Lebih baik untuk mobile */
+        }
+        
+        .article-content img {
+            @apply my-4;
+        }
+    }
+    
     .animate-fade-up {
         animation: fadeUp 0.5s ease-out forwards;
     }
+    
     @keyframes fadeUp {
         from {
             opacity: 0;
@@ -22,6 +126,20 @@
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+    
+    /* Fixed grid for related articles */
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    /* Improved mobile comment display */
+    @media (max-width: 640px) {
+        .comment-container {
+            margin-left: 0;
         }
     }
 </style>
@@ -57,13 +175,89 @@
             </div>
         </div>
 
-        <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-12 animate-fade-up delay-100">
-            <div class="prose dark:prose-invert max-w-none article-content">
-                {!! $article->isi !!}
+        <!-- Enhanced Article Content Display -->
+        <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 mb-12 animate-fade-up delay-100">
+            <!-- Article featured image if available -->
+            @if($article->featured_image)
+            <div class="mb-8 -mx-6 sm:-mx-8 -mt-6 sm:-mt-8">
+                <img src="{{ asset($article->featured_image) }}" 
+                     alt="{{ $article->judul }}" 
+                     class="w-full h-auto object-cover rounded-t-2xl max-h-96">
             </div>
+            @endif
+            
+            <!-- Structured article content with improved typography -->
+            <div class="prose prose-lg dark:prose-invert max-w-none article-content">
+                @php
+                    // Fall-back formatting jika ada masalah dengan pemformatan controller
+                    $content = $article->isi;
+                    if (strpos($content, '<p>') === false) {
+                        // Deteksi paragraf berdasarkan baris kosong
+                        $paragraphs = preg_split('/\n\s*\n/', $content);
+                        $formattedContent = '';
+                        
+                        foreach ($paragraphs as $paragraph) {
+                            if (!empty(trim($paragraph))) {
+                                $formattedContent .= '<p>' . trim($paragraph) . '</p>';
+                            }
+                        }
+                        
+                        // Jika tidak ada paragraf terdeteksi, coba deteksi kalimat
+                        if (count($paragraphs) <= 1) {
+                            $sentences = preg_split('/(?<=[.!?])\s+(?=[A-Z])/', $content);
+                            if (count($sentences) > 1) {
+                                $formattedContent = '';
+                                $currentParagraph = '';
+                                $sentenceCount = 0;
+                                
+                                foreach ($sentences as $sentence) {
+                                    $currentParagraph .= $sentence . ' ';
+                                    $sentenceCount++;
+                                    
+                                    // Setiap 2-3 kalimat jadikan satu paragraf
+                                    if ($sentenceCount >= 2 && (strpos($sentence, '.') !== false || strpos($sentence, '!') !== false || strpos($sentence, '?') !== false)) {
+                                        $formattedContent .= '<p>' . trim($currentParagraph) . '</p>';
+                                        $currentParagraph = '';
+                                        $sentenceCount = 0;
+                                    }
+                                }
+                                
+                                // Tambahkan sisa kalimat sebagai paragraf terakhir
+                                if (!empty(trim($currentParagraph))) {
+                                    $formattedContent .= '<p>' . trim($currentParagraph) . '</p>';
+                                }
+                            }
+                        }
+                        
+                        // Jika masih belum ada paragraf terdeteksi, gunakan konten asli
+                        if (empty(trim($formattedContent))) {
+                            $formattedContent = '<p>' . $content . '</p>';
+                        }
+                        
+                        // Gunakan hasil pemformatan
+                        $content = $formattedContent;
+                    }
+                @endphp
+                
+                {!! $content !!}
+            </div>
+            
+            <!-- Article tags/keywords -->
+            @if(isset($article->keywords) && !empty($article->keywords))
+            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex flex-wrap gap-2">
+                    @foreach(explode(',', $article->keywords) as $keyword)
+                    <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm text-gray-700 dark:text-gray-300">
+                        {{ trim($keyword) }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </article>
 
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 animate-fade-up delay-200">
+        <!-- Comments Section with improved mobile layout -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 animate-fade-up delay-200">
             <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center">
                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
@@ -123,6 +317,45 @@
                 @endforelse
             </div>
         </div>
+        
+        <!-- Related articles section -->
+        @if(isset($relatedArticles) && count($relatedArticles) > 0)
+        <div class="mt-12">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                Artikel Terkait
+            </h3>
+            
+            <div class="articles-grid">
+                @foreach($relatedArticles as $related)
+                <a href="{{ route('articles.show', $related) }}" class="block group">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                        @if($related->featured_image)
+                        <div class="h-48 overflow-hidden">
+                            <img src="{{ asset($related->featured_image) }}" 
+                                alt="{{ $related->judul }}"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        @endif
+                        <div class="p-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {{ $related->tag === 'penyakit' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200' : 
+                                   ($related->tag === 'perawatan' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200' : 
+                                   'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200') }}">
+                                {{ ucfirst($related->tag) }}
+                            </span>
+                            <h4 class="mt-2 text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-2">
+                                {{ $related->judul }}
+                            </h4>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
+                                {{ Str::limit(strip_tags($related->isi), 100) }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

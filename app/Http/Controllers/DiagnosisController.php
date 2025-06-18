@@ -35,10 +35,15 @@ class DiagnosisController extends Controller
             }
 
             $r = $resp->json();
-
-            $originalUrl   = asset('storage/'.$path);
-            $flaskBase     = rtrim(env('FLASK_BASE_URL'), '/');
-            $predictedUrl  = $flaskBase . ($r['predicted_image_url'] ?? '');
+            $flaskBase = rtrim(env('FLASK_BASE_URL'), '/');
+            
+            // Handle the original image URL - check if it comes from Laravel or Flask
+            $originalUrl = isset($r['original_image_url']) ? 
+                $flaskBase . $r['original_image_url'] : asset('storage/'.$path);
+                
+            // Handle the predicted image URL
+            $predictedUrl = isset($r['predicted_image_url']) ? 
+                $flaskBase . $r['predicted_image_url'] : null;
 
             $payload = array_merge($r, [
                 'original_image_url'  => $originalUrl,

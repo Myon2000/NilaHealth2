@@ -109,6 +109,59 @@
         transform: translateY(-3px);
         box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
     }
+    
+    /* Alert Styles */
+    .alert-warning {
+        background: rgba(251, 191, 36, 0.15);
+        border-left: 4px solid #f59e0b;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .alert-icon {
+        flex-shrink: 0;
+        margin-right: 1rem;
+        padding: 0.5rem;
+        background: rgba(251, 191, 36, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .alert-content {
+        flex: 1;
+    }
+    
+    .alert-title {
+        font-weight: 600;
+        color: #f59e0b;
+        margin-bottom: 0.25rem;
+    }
+    
+    .alert-message {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .try-again-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 9999px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        margin-top: 1rem;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .try-again-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
 
     @media (max-width: 640px) {
         .glass-card {
@@ -128,10 +181,14 @@
             font-size: 2rem !important;
         }
 
-        .cta-button {
+        .cta-button, .try-again-btn {
             width: 100%;
             padding: 1rem;
             text-align: center;
+        }
+        
+        .alert-warning {
+            padding: 1rem;
         }
     }
 </style>
@@ -147,28 +204,34 @@
             <h2 class="text-4xl font-extrabold text-white mb-4">Hasil Diagnosa</h2>
         </div>
 
-        @php $r = session('result'); @endphp
+        @php 
+            $r = session('result'); 
+            $isHighConfidence = isset($r['confidence']) && $r['confidence'] >= 80;
+        @endphp
 
         @if($r)
             <div class="glass-card fade-in">
                 <div class="image-preview-wrapper mb-6">
-                    @if(!empty($r['predicted_image_url']))
+                    @if($isHighConfidence && !empty($r['predicted_image_url']))
+                        {{-- Display prediction image when confidence is high --}}
                         <img src="{{ $r['predicted_image_url'] }}" 
-                             alt="Hasil Prediksi"
+                             alt="Gambar Prediksi"
                              class="w-full h-[400px] object-cover rounded-xl">
-                    @else
+                    @elseif(!empty($r['original_image_url']))
+                        {{-- Display original image when confidence is low --}}
                         <img src="{{ $r['original_image_url'] }}" 
                              alt="Gambar Asli"
                              class="w-full h-[400px] object-cover rounded-xl">
                     @endif
-
-                    <div class="prediction-label">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-white/80">Prediksi:</span>
-                            <span class="font-semibold">{{ $r['prediction'] ?? '–' }}</span>
-                        </div>
-                        
-                        @if(isset($r['confidence']))
+                    
+                    {{-- Tampilkan label prediksi HANYA jika confidence tinggi --}}
+                    @if($isHighConfidence && !empty($r['prediction']))
+                        <div class="prediction-label">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-white/80">Prediksi:</span>
+                                <span class="font-semibold">{{ $r['prediction'] }}</span>
+                            </div>
+                            
                             <div class="space-y-1">
                                 <div class="flex justify-between items-center">
                                     <span class="text-white/80">Confidence:</span>
@@ -178,29 +241,55 @@
                                     <div class="confidence-bar-fill" style="width: {{ $r['confidence'] }}%"></div>
                                 </div>
                             </div>
-                        @endif
-
-                        @isset($r['warning'])
-                            <p class="text-yellow-400 mt-3 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                                {{ $r['warning'] }}
-                            </p>
-                        @endisset
-
-                        @isset($r['error'])
-                            <p class="text-red-400 mt-3 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                {{ $r['error'] }}
-                            </p>
-                        @endisset
-                    </div>
+                        </div>
+                    @endif
                 </div>
+                
+                {{-- Warning untuk confidence rendah --}}
+                @if(!$isHighConfidence && isset($r['confidence']))
+                    <div class="alert-warning">
+                        <div class="alert-icon">
+                            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <div class="alert-content">
+                            <h3 class="alert-title">Prediksi tidak dapat dipastikan</h3>
+                            <p class="alert-message">Pastikan gambar yang di upload adalah gambar ikan nila.</p>
+                        </div>
+                    </div>
 
-                @if(!isset($r['error']) && !isset($r['warning']) && !empty($r['prediction']))
+                    <div class="text-center mt-6">
+                        <a href="{{ route('diagnosis.form') }}" class="try-again-btn">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            Coba lagi dengan gambar berbeda
+                        </a>
+                    </div>
+                @elseif(isset($r['error']))
+                    <div class="alert-warning">
+                        <div class="alert-icon">
+                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="alert-content">
+                            <h3 class="alert-title">Terjadi Kesalahan</h3>
+                            <p class="alert-message">{{ $r['error'] }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-6">
+                        <a href="{{ route('diagnosis.form') }}" class="try-again-btn">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            Coba lagi
+                        </a>
+                    </div>
+                {{-- Tombol rekomendasi hanya ditampilkan jika confidence tinggi --}}
+                @elseif($isHighConfidence && !empty($r['prediction']))
                     <div class="text-center">
                         <a href="{{ route('diagnosis.recommendation', ['disease' => \Illuminate\Support\Str::slug($r['prediction'])]) }}"
                            class="cta-button inline-flex items-center group">
@@ -248,6 +337,15 @@
     }, options);
 
     faders.forEach(el => observer.observe(el));
+    
+    // Handle image error
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+      img.addEventListener('error', function() {
+        this.style.display = 'none';
+        console.error('Failed to load image:', this.src);
+      });
+    });
   });
 </script>
 @endsection

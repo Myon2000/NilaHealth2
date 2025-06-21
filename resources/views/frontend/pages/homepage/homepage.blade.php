@@ -558,7 +558,7 @@
               
               <div class="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
                   <div class="text-3xl font-bold text-white mb-1">95%</div>
-                  <div class="text-white/70">Akurasi Diagnosis</div>
+                  <div class="text-white/70">Akurasi Hingga</div>
               </div>
               
               <div class="p-4 rounded-lg bg-white/5 backdrop-blur-sm">

@@ -6,8 +6,8 @@
 
   <div class="hidden md:flex items-center space-x-8">
     <a href="{{ route('diagnosis.form') }}" class="hover:text-blue-400 transition">Diagnosis</a>
-    <a href="{{ route('home') }}#schedule" class="hover:text-blue-400 transition">Schedule</a>
-    <a href="{{ route('home') }}#article" class="hover:text-blue-400 transition">Article</a>
+    <a href="{{ route('home') }}#schedule" class="hover:text-blue-400 transition">Penjadwalan</a>
+    <a href="{{ route('home') }}#article" class="hover:text-blue-400 transition">Artikel</a>
 
     <div class="relative" x-data="{ open: false }">
       <button @click="open = !open" @click.away="open = false"
@@ -59,12 +59,10 @@
          class="absolute right-0 top-14 w-52 bg-white text-black rounded shadow-lg z-50 p-2 space-y-2">
       <a href="{{ route('diagnosis.form') }}"
          class="block px-4 py-2 rounded hover:bg-gray-100">Diagnosis</a>
-      <a href="#schedule"
-         class="block px-4 py-2 rounded hover:bg-gray-100">Schedule</a>
       <a href="{{ route('home') }}#schedule"
-         class="block px-4 py-2 rounded hover:bg-gray-100">Schedule Sect.</a>
+         class="block px-4 py-2 rounded hover:bg-gray-100">Penjadwalan</a>
       <a href="{{ route('home') }}#article"
-         class="block px-4 py-2 rounded hover:bg-gray-100">Article</a>
+         class="block px-4 py-2 rounded hover:bg-gray-100">Artikel</a>
       <a href="{{ route('profile.show') }}"
          class="block px-4 py-2 rounded hover:bg-gray-100">Informasi Akun</a>
       <form method="POST" action="{{ route('logout') }}">
